@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"
+    width="800" height="300"
+    creationComplete="init();">
+
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.mattbolt.grits.messaging.defaultMessageParser;
+            import com.mattbolt.grits.net.defaultGritsServer;
+
+            /**
+             * @private
+             * server socket connection
+             */
+            private var _grits:Grits;
+
+            /**
+             * @private
+             * handle initialize
+             */
+            private function init():void {
+                _grits = new GritsBuilder()
+                    .withServer(defaultGritsServer())
+                    .boundTo("localhost", 4444)
+                    .parsingMessagesWith(defaultMessageParser())
+                    .usingContainer(tab)
+                    .build();
+
+                _grits.start();
+            }
+
+        ]]>
+    </fx:Script>
+
+    <mx:TabNavigator id="tab" left="2" right="2" top="2" bottom="2"/>
+</s:WindowedApplication>
