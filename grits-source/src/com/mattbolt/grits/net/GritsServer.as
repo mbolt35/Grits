@@ -23,17 +23,40 @@ package com.mattbolt.grits.net {
     //  imports
     //----------------------------------
 
+    import com.mattbolt.grits.events.GritsServerEvent;
     import com.mattbolt.grits.events.GritsSocketEvent;
+    import com.mattbolt.grits.events.GritsTransportEvent;
     import com.mattbolt.grits.messaging.IGritsMessageParser;
     import com.mattbolt.grits.util.GarbageCollector;
     import com.mattbolt.grits.util.IGarbageCollectable;
+    import flash.events.IEventDispatcher;
 
+    import flash.events.EventDispatcher;
     import flash.events.IOErrorEvent;
     import flash.events.Event;
     import flash.events.ServerSocketConnectEvent;
     import flash.net.ServerSocket;
     import flash.utils.Dictionary;
 
+
+    //----------------------------------
+    //  imports
+    //----------------------------------
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsTransportEvent.DELIVERY
+     */
+    [Event(name="delivery", type="com.mattbolt.grits.events.GritsTransportEvent")]
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsServerEvent.OPENED_CONNECTION
+     */
+    [Event(name="openedConnection", type="com.mattbolt.grits.events.GritsServerEvent")]
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsServerEvent.CLOSED_CONNECTION
+     */
+    [Event(name="closedConnection", type="com.mattbolt.grits.events.GritsServerEvent")]
 
     /**
      * This class manages a single socket server and its connections
@@ -71,6 +94,12 @@ package com.mattbolt.grits.net {
          * the logging server socket
          */
         private var _server:ServerSocket = new ServerSocket();
+
+        /**
+         * @private
+         * this dispatcher handles all the event dispatch and forwarding
+         */
+        private var _internalDispatcher:EventDispatcher = new EventDispatcher(IEventDispatcher(this));
 
         /**
          * @private
@@ -116,9 +145,12 @@ package com.mattbolt.grits.net {
 
             initialize();
 
-            // TODO: AIR doesn't like "localhost" so use 127.0.0.1
+            // FIXME: AIR doesn't like "localhost" so use 127.0.0.1 instead. I know those two
+            // FIXME: are not interchangable, but is there another alternative? Throw and Error?
             _server.bind(_port, _address == "localhost" ? "127.0.0.1" : _address);
             _server.listen();
+
+            _listening = true;
         }
 
         /**
@@ -129,8 +161,7 @@ package com.mattbolt.grits.net {
                 return;
             }
 
-            _server.close();
-            removeServerListeners();
+            cleanup();
 
             _server = new ServerSocket();
         }
@@ -164,10 +195,20 @@ package com.mattbolt.grits.net {
          * Removes event listeners and disconnects
          */
         public function dispose():void {
-            removeServerListeners();
-            _server.close();
+            cleanup();
 
             GarbageCollector.collect(_byId, _sockets);
+        }
+
+        /**
+         * @private
+         * this method removes the listeners and stops the server
+         */
+        private function cleanup():void {
+            _server.close();
+            removeServerListeners();
+
+            _listening = false;
         }
 
 
@@ -191,6 +232,7 @@ package com.mattbolt.grits.net {
             _byId[gritsSocket.id] = gritsSocket;
             _sockets.push(gritsSocket);
 
+            dispatchEvent(new GritsServerEvent(GritsServerEvent.OPENED_CONNECTION, gritsSocket));
         }
 
         /**
@@ -201,6 +243,8 @@ package com.mattbolt.grits.net {
             var delivery:GritsDeliveryDetails = _parser.parse(event.message);
 
             trace("[" + delivery.tag + "][" + delivery.command + "][" + delivery.key + "]: " + delivery.logText);
+
+            dispatchEvent(new GritsTransportEvent(GritsTransportEvent.DELIVERY, delivery));
         }
 
         /**
@@ -221,6 +265,8 @@ package com.mattbolt.grits.net {
                 _sockets.splice(index, 1);
             }
 
+            dispatchEvent(new GritsServerEvent(GritsServerEvent.CLOSED_CONNECTION, gritsSocket));
+
             GarbageCollector.collect(gritsSocket);
         }
 
@@ -232,11 +278,92 @@ package com.mattbolt.grits.net {
             trace("on close connection: " + event);
         }
 
+
+        //--------------------------------------------------------------------------
+        //
+        //  Methods: IEventDispatcher
+        //
+        //--------------------------------------------------------------------------
+
+        /**
+         * @copy flash.events.EventDispatcher#addEventListener
+         */
+        public function addEventListener( type:String,
+                                          listener:Function,
+                                          useCapture:Boolean = false,
+                                          priority:int = 0,
+                                          useWeakReference:Boolean = false ):void
+        {
+            _internalDispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+        }
+
+        /**
+         * @copy flash.events.EventDispatcher#removeEventListener
+         */
+        public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
+            _internalDispatcher.removeEventListener(type, listener, useCapture);
+        }
+
+        /**
+         * @copy flash.events.EventDispatcher#dispatchEvent
+         */
+        public function dispatchEvent(event:Event):Boolean {
+            return _internalDispatcher.dispatchEvent(event);
+        }
+
+        /**
+         * @copy flash.events.EventDispatcher#hasEventListener
+         */
+        public function hasEventListener(type:String):Boolean {
+            return _internalDispatcher.hasEventListener(type);
+        }
+
+        /**
+         * @copy flash.events.EventDispatcher#willTrigger
+         */
+        public function willTrigger(type:String):Boolean {
+            return _internalDispatcher.willTrigger(type);
+        }
+
+
         //--------------------------------------------------------------------------
         //
         //  Properties
         //
         //--------------------------------------------------------------------------
+
+        /**
+         * @private
+         * backing variable for listening property
+         */
+        private var __listening:Boolean;
+
+        /**
+         * @private
+         * property proxy for binding "listening"
+         */
+        private function get _listening():Boolean {
+            return __listening;
+        }
+
+        /**
+         * @private
+         */
+        private function set _listening(value:Boolean):void {
+            __listening = value;
+
+            dispatchEvent(new Event("listeningChanged"));
+        }
+
+        [Bindable(event="listeningChanged")]
+
+        /**
+         * This property is set to <code>true</code> when the server has started and
+         * is awaiting, or has already accepted, connections.
+         */
+        public function get listening():Boolean {
+            return _listening;
+        }
 
         /**
          * This property contains the <code>ServerSocket</code> instance used to control

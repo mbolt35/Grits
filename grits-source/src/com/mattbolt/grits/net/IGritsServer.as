@@ -23,7 +23,28 @@ package com.mattbolt.grits.net {
     //  imports
     //----------------------------------
 
+    import flash.events.IEventDispatcher;
     import flash.net.ServerSocket;
+
+
+    //----------------------------------
+    //  imports
+    //----------------------------------
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsTransportEvent.DELIVERY
+     */
+    [Event(name="delivery", type="com.mattbolt.grits.events.GritsTransportEvent")]
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsServerEvent.OPENED_CONNECTION
+     */
+    [Event(name="openedConnection", type="com.mattbolt.grits.events.GritsServerEvent")]
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsServerEvent.CLOSED_CONNECTION
+     */
+    [Event(name="closedConnection", type="com.mattbolt.grits.events.GritsServerEvent")]
 
 
     /**
@@ -32,7 +53,7 @@ package com.mattbolt.grits.net {
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
-    public interface IGritsServer {
+    public interface IGritsServer extends IEventDispatcher {
 
         //--------------------------------------------------------------------------
         //

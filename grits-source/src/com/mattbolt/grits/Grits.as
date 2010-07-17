@@ -24,6 +24,7 @@ package com.mattbolt.grits {
     //----------------------------------
 
     import com.mattbolt.grits.config.GritsConfiguration;
+    import com.mattbolt.grits.events.GritsServerEvent;
     import com.mattbolt.grits.net.IGritsServer;
 
     import flash.display.DisplayObjectContainer;
@@ -60,6 +61,7 @@ package com.mattbolt.grits {
          */
         private var _uiContainer:DisplayObjectContainer;
 
+
         //--------------------------------------------------------------------------
         //
         //  Constructor
@@ -79,6 +81,7 @@ package com.mattbolt.grits {
 
             _gritsConfiguration.load();
         }
+
 
         //--------------------------------------------------------------------------
         //
@@ -102,6 +105,7 @@ package com.mattbolt.grits {
             _server.stop();
         }
 
+
         //--------------------------------------------------------------------------
         //
         //  Properties
@@ -113,6 +117,15 @@ package com.mattbolt.grits {
          */
         public function get config():GritsConfiguration {
             return _gritsConfiguration;
+        }
+
+        [Bindable(event=GritsServerEvent.GRITS_SERVER_CHANGED)]
+
+        /**
+         * This property contains the instance of the grits server implementation.
+         */
+        public function get server():IGritsServer {
+            return _server;
         }
 
     }
