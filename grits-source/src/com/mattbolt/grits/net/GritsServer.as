@@ -38,7 +38,7 @@ package com.mattbolt.grits.net {
     /**
      * This class manages a single socket server and its connections
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsServer implements IGritsServer, IGarbageCollectable {
 

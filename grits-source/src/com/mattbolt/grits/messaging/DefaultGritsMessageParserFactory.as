@@ -26,7 +26,7 @@ package com.mattbolt.grits.messaging {
     /**
      * This class generates <code>GritsMessageParser</code> instances for consumption.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class DefaultGritsMessageParserFactory implements IGritsMessageParserFactory {
 

@@ -33,7 +33,7 @@ package com.mattbolt.grits {
      * This class is used to build a <code>Grits</code> controller instance used
      * to manage the application.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsBuilder {
 

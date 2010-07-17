@@ -29,7 +29,7 @@ package com.mattbolt.grits.data {
     /**
      * This class represents a logging node used to display the log.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsLoggerNode {
 

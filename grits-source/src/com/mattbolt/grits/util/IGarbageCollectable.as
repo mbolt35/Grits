@@ -23,7 +23,7 @@ package com.mattbolt.grits.util {
      * This interface defines an implementation prototype for an object to be setup
      * for flash garbage collection.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public interface IGarbageCollectable {
 

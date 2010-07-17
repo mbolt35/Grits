@@ -28,7 +28,7 @@ package com.mattbolt.grits.net {
     /**
      * This class generates <code>GritsServer</code> instances.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class DefaultGritsServerFactory implements IGritsServerFactory {
 

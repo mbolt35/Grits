@@ -27,7 +27,7 @@ package com.mattbolt.grits.config {
     /**
      * This class
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsConfiguration {
 

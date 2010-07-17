@@ -31,7 +31,7 @@ package com.mattbolt.grits {
     /**
      * This class acts as the main controller for the application.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class Grits {
 

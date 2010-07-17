@@ -24,7 +24,7 @@ package com.mattbolt.grits.events {
     /**
      * This event class is used to notify objects of a grits socket event.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsSocketEvent extends Event {
 

@@ -29,7 +29,7 @@ package com.mattbolt.grits.messaging {
     /**
      * This interface defines an implementation prototype
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public interface IGritsMessageParser {
 

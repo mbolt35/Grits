@@ -29,7 +29,7 @@ package com.mattbolt.grits.messaging {
      * This function returns the default message parser factory to be used for
      * creation of <code>IGritsMessageParser</code> implementation instances.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public function defaultMessageParser():IGritsMessageParserFactory {
         return new DefaultGritsMessageParserFactory();

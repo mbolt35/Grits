@@ -29,7 +29,7 @@ package com.mattbolt.grits.net {
     /**
      * This class represents a logging delivery via socket connection.
      *
-     * @author Matt Bolt <mbolt35&#64;gmail.com>
+     * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
     public class GritsDeliveryDetails {
 
