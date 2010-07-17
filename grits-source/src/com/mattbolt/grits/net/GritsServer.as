@@ -146,7 +146,7 @@ package com.mattbolt.grits.net {
             initialize();
 
             // FIXME: AIR doesn't like "localhost" so use 127.0.0.1 instead. I know those two
-            // FIXME: are not interchangable, but is there another alternative? Throw and Error?
+            // FIXME: are not interchangable, but is there another alternative? Throw an Error?
             _server.bind(_port, _address == "localhost" ? "127.0.0.1" : _address);
             _server.listen();
 
