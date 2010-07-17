@@ -27,7 +27,7 @@ package com.mattbolt.grits.enum {
     /**
      * This class contains an enumeration of known logger formats.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public class GritsParserTypes {
 

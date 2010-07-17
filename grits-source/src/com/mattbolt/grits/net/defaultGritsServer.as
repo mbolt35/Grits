@@ -28,7 +28,7 @@ package com.mattbolt.grits.net {
     /**
      * This function creates and returns the default grits server factory.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public function defaultGritsServer():IGritsServerFactory {
         return new DefaultGritsServerFactory();

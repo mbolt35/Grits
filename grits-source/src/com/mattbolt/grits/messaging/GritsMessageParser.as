@@ -29,7 +29,7 @@ package com.mattbolt.grits.messaging {
     /**
      * This class parses all of the logging messages sent to the server.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public class GritsMessageParser implements IGritsMessageParser {
 

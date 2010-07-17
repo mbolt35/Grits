@@ -47,7 +47,7 @@ package com.mattbolt.grits.net {
     /**
      * This class manages a single socket connection for the grits logger.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public class GritsSocket extends EventDispatcher implements IGarbageCollectable {
 

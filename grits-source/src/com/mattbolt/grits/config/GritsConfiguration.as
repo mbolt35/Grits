@@ -17,18 +17,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.mattbolt.grits.messaging {
+package com.mattbolt.grits.config {
 
     //----------------------------------
     //  imports
     //----------------------------------
 
+
     /**
-     * This class generates <code>GritsMessageParser</code> instances for consumption.
+     * This class
      *
      * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
-    public class DefaultGritsMessageParserFactory implements IGritsMessageParserFactory {
+    public class GritsConfiguration {
+
+        //--------------------------------------------------------------------------
+        //
+        //  Variables
+        //
+        //--------------------------------------------------------------------------
+
+
 
         //--------------------------------------------------------------------------
         //
@@ -37,11 +46,12 @@ package com.mattbolt.grits.messaging {
         //--------------------------------------------------------------------------
 
         /**
-         * <code>DefaultGritsMessageParser</code> Constructor.
+         * <code>GritsConfiguration</code> Constructor.
          */
-        public function DefaultGritsMessageParserFactory() {
+        public function GritsConfiguration() {
 
         }
+
 
         //--------------------------------------------------------------------------
         //
@@ -49,21 +59,15 @@ package com.mattbolt.grits.messaging {
         //
         //--------------------------------------------------------------------------
 
-        /**
-         * This factory method creates a new <code>IGritsMessageParser</code> implementation
-         * instance.
-         *
-         * @return The new <code>IGritsMessageParser</code> implementation instance.
-         */
-        public function parser():IGritsMessageParser {
-            return new GritsMessageParser();
-        }
+
 
         //--------------------------------------------------------------------------
         //
         //  Properties
         //
         //--------------------------------------------------------------------------
+
+
 
     }
 

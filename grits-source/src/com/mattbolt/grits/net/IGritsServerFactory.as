@@ -30,7 +30,7 @@ package com.mattbolt.grits.net {
      * This interface defines an implementation prototype for an object which generates
      * <code>IGritsServer</code> instances.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public interface IGritsServerFactory {
 

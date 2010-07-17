@@ -33,7 +33,7 @@ package com.mattbolt.grits.util {
      * This class collects any implementations of <code>IGarbage</code> that is
      * specifically disposed of by using this class.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public class GarbageCollector {
 

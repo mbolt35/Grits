@@ -25,7 +25,7 @@ package com.mattbolt.grits.events {
      * This event class is fired when the logging framework transports a log delivery
      * to the ui for display.
      *
-     * @author Matt Bolt <mbolt35@gmail.com>
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
     public class GritsTransportEvent extends Event {
 
