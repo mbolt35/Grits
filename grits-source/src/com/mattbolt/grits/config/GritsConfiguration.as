@@ -24,10 +24,21 @@ package com.mattbolt.grits.config {
     //----------------------------------
 
     import com.mattbolt.grits.enum.GritsWindowOptions;
+    import com.mattbolt.grits.events.GritsConfigurationEvent;
 
+    import flash.events.EventDispatcher;
     import flash.data.EncryptedLocalStore;
     import flash.net.registerClassAlias;
     import flash.utils.ByteArray;
+
+    //----------------------------------
+    //  events
+    //----------------------------------
+
+    /**
+     * @eventType com.mattbolt.grits.events.GritsConfigurationEvent.CONFIGURATION_CHANGED
+     */
+    [Event(name="configurationChanged", type="com.mattbolt.grits.events.GritsConfigurationEvent")]
 
 
     /**
@@ -35,7 +46,7 @@ package com.mattbolt.grits.config {
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
-    public class GritsConfiguration {
+    public class GritsConfiguration extends EventDispatcher {
 
         //--------------------------------------------------------------------------
         //
@@ -95,8 +106,6 @@ package com.mattbolt.grits.config {
             var bytes:ByteArray = EncryptedLocalStore.getItem(CONFIG_FILE_KEY);
 
             if (!bytes || bytes.length <= 0) {
-                trace("FILE DOESNT EXIST - CREATING ONE!");
-
                 _configFile = new GritsConfigurationFile();
                 _configFile.saveLogs = true;
                 _configFile.useTabbedView = true;
@@ -110,7 +119,7 @@ package com.mattbolt.grits.config {
 
             _configFile = GritsConfigurationFile( bytes.readObject() );
 
-            trace("FILE EXISTS: " + _configFile);
+            dispatchEvent(new GritsConfigurationEvent(GritsConfigurationEvent.CONFIGURATION_CHANGED));
         }
 
         /**
@@ -134,6 +143,15 @@ package com.mattbolt.grits.config {
         //
         //--------------------------------------------------------------------------
 
+        [Bindable(event=GritsConfigurationEvent.CONFIGURATION_CHANGED)]
+
+        /**
+         * This property contains the grits configuration file which the settings
+         * are loaded into.
+         */
+        public function get configurationFile():GritsConfigurationFile {
+            return _configFile;
+        }
 
 
     }

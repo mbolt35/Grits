@@ -26,6 +26,8 @@ package com.mattbolt.grits.config {
     import mx.utils.StringUtil;
 
 
+    [Bindable]
+
     /**
      * This class contains the representation of the locally store configuration
      * file.

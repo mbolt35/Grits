@@ -198,9 +198,9 @@ package com.mattbolt.grits.net {
          * this handles a socket logging command
          */
         private function onSocketLog(event:GritsSocketEvent):void {
-            var d:GritsDeliveryDetails = _parser.parse(event.message);
+            var delivery:GritsDeliveryDetails = _parser.parse(event.message);
 
-            trace("[" + d.tag + "][" + d.command + "][" + d.key + "]: " + d.logText);
+            trace("[" + delivery.tag + "][" + delivery.command + "][" + delivery.key + "]: " + delivery.logText);
         }
 
         /**

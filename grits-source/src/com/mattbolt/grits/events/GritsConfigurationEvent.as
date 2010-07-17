@@ -19,18 +19,16 @@
 
 package com.mattbolt.grits.events {
 
-    import com.mattbolt.grits.net.GritsDeliveryDetails;
-
     import flash.events.Event;
 
 
     /**
-     * This event class is fired when the logging framework transports a log delivery
-     * to the ui for display.
+     * This event class is dispatched when actions take place that affect the
+     * grits configuration.
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
-    public class GritsTransportEvent extends Event {
+    public class GritsConfigurationEvent extends Event {
 
         //--------------------------------------------------------------------------
         //
@@ -39,9 +37,10 @@ package com.mattbolt.grits.events {
         //--------------------------------------------------------------------------
 
         /**
-         * @eventType delivery
+         * @eventType configurationChanged
          */
-        public static const DELIVERY:String = "delivery";
+        public static const CONFIGURATION_CHANGED:String = "configurationChanged";
+
 
         //--------------------------------------------------------------------------
         //
@@ -49,11 +48,6 @@ package com.mattbolt.grits.events {
         //
         //--------------------------------------------------------------------------
 
-        /**
-         * @private
-         * the parsed delivery details from the socket
-         */
-        private var _delivery:GritsDeliveryDetails;
 
 
         //--------------------------------------------------------------------------
@@ -72,11 +66,11 @@ package com.mattbolt.grits.events {
          * @param cancelable Specifies whether the behavior associated with
          * the event can be prevented.
          */
-        public function GritsTransportEvent(type:String, delivery:GritsDeliveryDetails) {
-            super(type, false, false);
+        public function GritsConfigurationEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) {
+            super(type, bubbles, cancelable);
 
-            _delivery = delivery;
         }
+
 
         //--------------------------------------------------------------------------
         //
@@ -88,14 +82,14 @@ package com.mattbolt.grits.events {
          * @inheritDoc
          */
         public override function clone():Event {
-            return new GritsTransportEvent(type, _delivery);
+            return new GritsConfigurationEvent(type, bubbles, cancelable);
         }
 
         /**
          * @inheritDoc
          */
         public override function toString():String {
-            return formatToString("GritsTransportEvent", "type", "delivery", "bubbles", "cancelable", "eventPhase");
+            return formatToString("GritsConfigurationEvent", "type", "bubbles", "cancelable", "eventPhase");
         }
 
 
@@ -104,14 +98,6 @@ package com.mattbolt.grits.events {
         //  Properties
         //
         //--------------------------------------------------------------------------
-
-        /**
-         * This property contains the parsed <code>GritsDeliveryDetails</code> instance
-         * sent by the client.
-         */
-        public function get delivery():GritsDeliveryDetails {
-            return _delivery;
-        }
 
     }
 
