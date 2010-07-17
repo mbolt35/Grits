@@ -23,6 +23,7 @@ package com.mattbolt.grits {
     //  imports
     //----------------------------------
 
+    import com.mattbolt.grits.config.GritsConfiguration;
     import com.mattbolt.grits.messaging.IGritsMessageParserFactory;
     import com.mattbolt.grits.net.IGritsServerFactory;
 
@@ -69,6 +70,12 @@ package com.mattbolt.grits {
 
         /**
          * @private
+         * the configuration to use
+         */
+        private var _gritsConfiguration:GritsConfiguration;
+
+        /**
+         * @private
          * the parent container for the ui
          */
         private var _container:DisplayObjectContainer;
@@ -111,6 +118,12 @@ package com.mattbolt.grits {
             return this;
         }
 
+        public function configuredWith(gritsConfig:GritsConfiguration):GritsBuilder {
+            _gritsConfiguration = gritsConfig;
+
+            return this;
+        }
+
         public function usingContainer(container:DisplayObjectContainer):GritsBuilder {
             _container = container;
 
@@ -120,6 +133,7 @@ package com.mattbolt.grits {
         public function build():Grits {
             return new Grits(
                 _server.gritsServer(_address, _port, _parser.parser()),
+                _gritsConfiguration,
                 _container);
         }
 

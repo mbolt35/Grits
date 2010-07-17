@@ -17,48 +17,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.mattbolt.grits {
+package com.mattbolt.grits.config {
 
     //----------------------------------
     //  imports
     //----------------------------------
 
-    import com.mattbolt.grits.config.GritsConfiguration;
-    import com.mattbolt.grits.net.IGritsServer;
-
-    import flash.display.DisplayObjectContainer;
+    import mx.utils.StringUtil;
 
 
     /**
-     * This class acts as the main controller for the application.
+     * This class contains the representation of the locally store configuration
+     * file.
      *
-     * @author Matt Bolt [mbolt35&#64;gmail.com]
+     * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
-    public class Grits {
+    public class GritsConfigurationFile {
 
         //--------------------------------------------------------------------------
         //
         //  Variables
         //
         //--------------------------------------------------------------------------
-
-        /**
-         * @private
-         * the grits server instance
-         */
-        private var _server:IGritsServer;
-
-        /**
-         * @private
-         * the grits configuration
-         */
-        private var _gritsConfiguration:GritsConfiguration;
-
-        /**
-         * @private
-         * the parent ui container
-         */
-        private var _uiContainer:DisplayObjectContainer;
 
         //--------------------------------------------------------------------------
         //
@@ -67,18 +47,12 @@ package com.mattbolt.grits {
         //--------------------------------------------------------------------------
 
         /**
-         * <code>Grits</code> Constructor.
+         * <code>GritsConfigurationFile</code> Constructor.
          */
-        public function Grits( server:IGritsServer,
-                               config:GritsConfiguration,
-                               uiContainer:DisplayObjectContainer )
-        {
-            _server = server;
-            _gritsConfiguration = config;
-            _uiContainer = uiContainer;
+        public function GritsConfigurationFile() {
 
-            _gritsConfiguration.load();
         }
+
 
         //--------------------------------------------------------------------------
         //
@@ -87,19 +61,17 @@ package com.mattbolt.grits {
         //--------------------------------------------------------------------------
 
         /**
-         * This method starts the socket output server. Once this is called, the server
-         * will bind to the local address/port and listen for connections.
+         * This method creates and returns the <code>String</code> representation of
+         * this object.
+         *
+         * @return
          */
-        public function start():void {
-            _server.start();
-        }
-
-        /**
-         * This method stops the socket output server. It will close all current connections
-         * and refuse to except any further connections.
-         */
-        public function stop():void {
-            _server.stop();
+        public function toString():String {
+            return StringUtil.substitute(
+                "Use Tabbed View: {0}, Window Mode: {1}, Save Logs: {2}",
+                useTabbedView,
+                windowMode,
+                saveLogs);
         }
 
         //--------------------------------------------------------------------------
@@ -109,11 +81,29 @@ package com.mattbolt.grits {
         //--------------------------------------------------------------------------
 
         /**
-         * This property contains the grits application configuration.
+         * This property is set to <code>true</code> if the user wishes to use a tab
+         * based log view.
+         *
+         * @default true
          */
-        public function get config():GritsConfiguration {
-            return _gritsConfiguration;
-        }
+        public var useTabbedView:Boolean;
+
+        /**
+         * This property contains the desired window mode.
+         *
+         * @default normal
+         *
+         * @see com.mattbolt.grits.enum.GritsWindowOptions
+         */
+        public var windowMode:String;
+
+        /**
+         * This property is set to <code>true</code> if the user wishes that the logs be
+         * saved on the local file system.
+         *
+         * @default false
+         */
+        public var saveLogs:Boolean;
 
     }
 

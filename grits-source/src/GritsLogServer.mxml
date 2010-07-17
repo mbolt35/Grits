@@ -32,6 +32,7 @@
 
     <fx:Script>
         <![CDATA[
+            import com.mattbolt.grits.config.GritsConfiguration;
             import com.mattbolt.grits.Grits;
             import com.mattbolt.grits.GritsBuilder;
             import com.mattbolt.grits.messaging.defaultMessageParser;
@@ -42,6 +43,7 @@
              * server socket connection
              */
             private var _grits:Grits;
+
             /**
              * @private
              * handle initialize
@@ -51,8 +53,8 @@
                     .withServer(defaultGritsServer())
                     .boundTo("localhost", 4444)
                     .parsingMessagesWith(defaultMessageParser())
+                    .configuredWith(new GritsConfiguration())
                     .usingContainer(tab)
-
                     .build();
 
                 _grits.start();

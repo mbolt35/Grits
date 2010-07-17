@@ -23,9 +23,15 @@ package com.mattbolt.grits.config {
     //  imports
     //----------------------------------
 
+    import com.mattbolt.grits.enum.GritsWindowOptions;
+
+    import flash.data.EncryptedLocalStore;
+    import flash.net.registerClassAlias;
+    import flash.utils.ByteArray;
+
 
     /**
-     * This class
+     * This class is used to control the configuration options for the grits application.
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
@@ -33,10 +39,28 @@ package com.mattbolt.grits.config {
 
         //--------------------------------------------------------------------------
         //
+        //  Constants
+        //
+        //--------------------------------------------------------------------------
+
+        /**
+         * @private
+         * config file key for the encrypted local store
+         */
+        private static const CONFIG_FILE_KEY:String = "gritsConfiguration";
+
+
+        //--------------------------------------------------------------------------
+        //
         //  Variables
         //
         //--------------------------------------------------------------------------
 
+        /**
+         * @private
+         * the locally stored configuration file
+         */
+        private var _configFile:GritsConfigurationFile;
 
 
         //--------------------------------------------------------------------------
@@ -49,7 +73,7 @@ package com.mattbolt.grits.config {
          * <code>GritsConfiguration</code> Constructor.
          */
         public function GritsConfiguration() {
-
+            registerClassAlias("GritsConfigurationFile", GritsConfigurationFile);
         }
 
 
@@ -59,7 +83,50 @@ package com.mattbolt.grits.config {
         //
         //--------------------------------------------------------------------------
 
+        /**
+         * This method loads the locally stored configuration file. If such a file does
+         * not exist, then one will be created.
+         */
+        public function load():void {
+            if (_configFile) {
+                return;
+            }
 
+            var bytes:ByteArray = EncryptedLocalStore.getItem(CONFIG_FILE_KEY);
+
+            if (!bytes || bytes.length <= 0) {
+                trace("FILE DOESNT EXIST - CREATING ONE!");
+
+                _configFile = new GritsConfigurationFile();
+                _configFile.saveLogs = true;
+                _configFile.useTabbedView = true;
+                _configFile.windowMode = GritsWindowOptions.NORMAL;
+
+                save();
+                return;
+            }
+
+            bytes.position = 0;
+
+            _configFile = GritsConfigurationFile( bytes.readObject() );
+
+            trace("FILE EXISTS: " + _configFile);
+        }
+
+        /**
+         * This method saves the existing configuration options to the local file system.
+         */
+        public function save():void {
+            if (!_configFile) {
+                return;
+            }
+
+            var bytes:ByteArray = new ByteArray();
+            bytes.writeObject(_configFile);
+            bytes.position = 0;
+
+            EncryptedLocalStore.setItem(CONFIG_FILE_KEY, bytes);
+        }
 
         //--------------------------------------------------------------------------
         //
