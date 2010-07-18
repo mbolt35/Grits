@@ -1,0 +1,15 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+.global {
+    background-color: #505153;
+}
+
+s|WindowedApplication {
+    background-color: #505153;
+}
+
+mx|TabNavigator {
+    background-color: #505153;
+}

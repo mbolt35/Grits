@@ -23,8 +23,21 @@
     xmlns:fx="http://ns.adobe.com/mxml/2009"
     xmlns:s="library://ns.adobe.com/flex/spark"
     xmlns:mx="library://ns.adobe.com/flex/mx"
+    xmlns:grits="com.mattbolt.grits.view.*"
+	creationPolicy="all"
     width="800" height="300"
+	frameRate="60"
+	showStatusBar="false"
     creationComplete="init();">
+    
+    <fx:Style source="GritsLogServerStyles.css"/>
+    
+    <s:layout>
+        <s:VerticalLayout 
+            horizontalAlign="left" verticalAlign="top" 
+            paddingBottom="0" paddingTop="0" 
+            paddingRight="0" paddingLeft="0"/>
+    </s:layout>
 
     <fx:Declarations>
         <!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -32,18 +45,36 @@
 
     <fx:Script>
         <![CDATA[
-            import com.mattbolt.grits.config.GritsConfiguration;
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
             import com.mattbolt.grits.Grits;
             import com.mattbolt.grits.GritsBuilder;
+            import com.mattbolt.grits.config.GritsConfiguration;
             import com.mattbolt.grits.messaging.defaultMessageParser;
             import com.mattbolt.grits.net.defaultGritsServer;
 
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
             /**
              * @private
              * server socket connection
              */
             private var _grits:Grits;
 
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods: Initializer
+            //
+            //--------------------------------------------------------------------------
+            
             /**
              * @private
              * handle initialize
@@ -59,9 +90,32 @@
 
                 _grits.start();
             }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
+            
+            [Bindable("nativeWindowChanged")]
+            
+            /**
+             * @inheritDoc
+             */
+            public override function get nativeWindow():NativeWindow {
+                return super.nativeWindow;
+            }
 
         ]]>
     </fx:Script>
 
-    <mx:TabNavigator id="tab" left="2" right="2" top="2" bottom="2"/>
+    <grits:GritsWindowTitleBar 
+        left="0" top="0"
+        width="100%"
+        nativeWindow="{nativeWindow}" 
+        windowTitle="Grits Socket Output Server"/>
+    
+    <mx:TabNavigator id="tab" left="1" right="1" height="100%"/>
+    
 </s:WindowedApplication>
