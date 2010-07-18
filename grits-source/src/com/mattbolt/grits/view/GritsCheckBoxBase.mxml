@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<!---
+* This class is used as the base checkbox implementation.
+* 
+* @author Matt Bolt [mbolt35&#64;gmail.com]
+-->
+<s:Group 
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/mx" 
+    click="onGroupClick(event);"
+    mouseOut="onGroupMouseOut(event);"
+    mouseOver="onGroupMouseOver(event);"
+    creationComplete="_created = true;"
+    width="69" height="26">
+    
+    <fx:Declarations>
+        <!-- These effects handle tweening to a state position if the dragging fails -->
+        <s:Move id="toSelected" autoCenterTransform="true" duration="250" xTo="0" target="{thumbImage}"/>
+        <s:Move id="toDeselected" autoCenterTransform="true" duration="250" xTo="-34.5" target="{thumbImage}"/>
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * true when the component has been created
+             */
+            private var _created:Boolean = false;
+            
+            /**
+             * @private
+             * thumb state
+             */
+            private var _thumbOn:Boolean = false;
+            
+            /**
+             * @private
+             * is dragging
+             */
+            private var _isDragging:Boolean = false;
+            
+            /**
+             * @private
+             * track actions of the mouse
+             */
+            private var _trackPoint:Point;
+            
+            /**
+             * @private
+             * whether or not the dragging is substantial enough to cancel the click event
+             */
+            private var _cancelClick:Boolean = false;
+            
+            /**
+             * @private
+             * was dragging out
+             */
+            private var _wasDraggingOut:Boolean = false;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods: Event Handlers
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * handles the thumb mouse down
+             */ 
+            private function onThumbMouseDown(event:MouseEvent):void {
+                if (_isDragging) {
+                    return;
+                }
+                
+                startThumbDrag(trackMousePoint(event));
+            }
+            
+            /**
+             * @private
+             * handles the thumb mouse up
+             */ 
+            private function onThumbMouseUp(event:MouseEvent):void {                
+                var upPt:Point = trackMousePoint(event);
+                
+                thumbImage.stopDrag();
+                _isDragging = false;
+                
+                if (Math.abs(upPt.x -_trackPoint.x) <= 1) {
+                    return;
+                }
+                
+                _cancelClick = true;
+                
+                if (_thumbOn) {
+                    this.currentState = upPt.x < 34 ? "Deselected" : "Selected";
+                } else {
+                    this.currentState = upPt.x >= 34 ? "Selected" : "Deselected";
+                }
+            }
+            
+            /**
+             * @private
+             * handles the group click
+             */ 
+            private function onGroupClick(event:MouseEvent):void {
+                if (_cancelClick) {
+                    _cancelClick = false;
+                    return;
+                }
+
+                const NOW_STATE:String = this.currentState;
+                this.currentState = NOW_STATE == "Selected" ? "Deselected" : "Selected";
+            }
+            
+            /**
+             * @private
+             * handle group mouse out
+             */
+            private function onGroupMouseOut(event:MouseEvent):void {
+                if (!_isDragging) {
+                    return;
+                }
+                
+                if (event.buttonDown) {
+                    _isDragging = false;
+                    _wasDraggingOut = true;
+                    
+                    thumbImage.stopDrag();
+
+                    this.currentState = _thumbOn ? "Selected" : "Deselected";
+                    return;
+                }
+            }
+            
+            /**
+             * @private
+             * handle group mouse over
+             */
+            private function onGroupMouseOver(event:MouseEvent):void {
+                if (!_wasDraggingOut || !event.buttonDown) {
+                    return;
+                }
+                
+                _wasDraggingOut = false;
+                
+                onThumbMouseDown(event);
+            }
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods: Helpers
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * start dragging the thumb from a specific point
+             */
+            private function startThumbDrag(from:Point):void {
+                _trackPoint = from;
+                
+                thumbImage.startDrag(false, new Rectangle(-34.5, 0.25, 34.5, 0));
+                
+                _isDragging = true;
+            }
+            
+            /**
+             * @private
+             * updates the tracking point based on the event
+             */
+            private function trackMousePoint(event:MouseEvent):Point { 
+                return globalToLocal(new Point(event.stageX, event.stageY));
+            }
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Override Properties: Group
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @inheritDoc
+             */
+            public override function get currentState():String {
+                return super.currentState;
+            }
+            
+            /**
+             * @private
+             */
+            public override function set currentState(value:String):void {
+                if (super.currentState == value && _created) {
+                    if (value == "Selected") {
+                        toSelected.xFrom = thumbImage.x;
+                        toSelected.play();
+                    } else {
+                        toDeselected.xFrom = thumbImage.x;
+                        toDeselected.play();
+                    }
+                }
+                
+                super.currentState = value;
+                
+                _thumbOn = value == "Selected";
+            }
+
+        ]]>
+    </fx:Script>
+
+    <!-- The thumb component -->
+    <mx:Image
+        id="thumbImage"
+        source="@Embed(source='com/mattbolt/grits/view/cb/thumb.png')"
+        autoLoad="true"
+        cacheAsBitmap="true"
+        smoothBitmapContent="true" 
+        mask="{componentMask}"
+        mouseDown="onThumbMouseDown(event);"
+        mouseUp="onThumbMouseUp(event);"
+        x="-34.5" y="0.25" 
+        x.Deselected="-34.5" y.Deselected="0.25"
+        x.Selected="0" y.Selected="0.25"/>
+
+    <!-- The Component Border -->
+    <s:Group left="0" right="0" width="69" height="26">
+        <s:Rect x="0" y="0" radiusX="2" radiusY="2" width="69" height="25">
+            <s:stroke>
+                <s:SolidColorStroke weight="1" color="#595A5C"/> 
+            </s:stroke>
+        </s:Rect>
+        <s:Rect x="1" y="1" radiusX="2" radiusY="2" width="67" height="23">
+            <s:stroke>
+                <s:SolidColorStroke weight="1" color="#ACACAC"/> 
+            </s:stroke>
+        </s:Rect>
+    </s:Group>
+    
+    <!-- The thumb mask -->
+    <s:Group id="componentMask">
+        <s:Rect left="0" top="0" radiusX="2" radiusY="2" width="69" height="25">
+            <s:fill>
+               <s:SolidColor color="#FF0000"/>
+            </s:fill>
+        </s:Rect>
+    </s:Group>
+        
+    <!-- States and Transitions -->
+    <s:states>
+        <s:State name="Deselected"/>
+        <s:State name="Selected"/>
+    </s:states>
+    <s:transitions>
+        <s:Transition autoReverse="true" fromState="Deselected" toState="Selected">
+            <s:Parallel>
+                <s:Parallel target="{thumbImage}">
+                    <s:Move autoCenterTransform="true" duration="250" startDelay="0"/>
+                </s:Parallel>
+            </s:Parallel>
+        </s:Transition>
+        <s:Transition autoReverse="true" fromState="Selected" toState="Deselected">
+            <s:Parallel>
+                <s:Parallel target="{thumbImage}">
+                    <s:Move autoCenterTransform="true" duration="250"/>
+                </s:Parallel>
+            </s:Parallel>
+        </s:Transition>
+    </s:transitions>
+</s:Group>

@@ -115,7 +115,15 @@
         width="100%"
         nativeWindow="{nativeWindow}" 
         windowTitle="Grits Socket Output Server"/>
-    
+    <s:Group width="100%" height="100%">
+        <s:layout>
+            <s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+        </s:layout>
+        <grits:GritsCheckBox width="400" label="Do you like this Component?" selected="true"/>
+        <grits:GritsCheckBox width="400" label="Do you like bacon?" selected="false"/>
+        <grits:GritsCheckBox width="400" label="Are you feeling better?" selected="true"/>
+        <grits:GritsCheckBox width="400" label="Are you over 21?" selected="true"/>
+    </s:Group>
     <mx:TabNavigator id="tab" left="1" right="1" height="100%"/>
     
 </s:WindowedApplication>
