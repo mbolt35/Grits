@@ -2,8 +2,8 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 
-.global {
-    background-color: #505153;
+s|Application {
+    font-family: VerdanaEmbedded;
 }
 
 s|VerticalLayout {
@@ -15,8 +15,55 @@ s|VerticalLayout {
 
 s|WindowedApplication {
     background-color: #505153;
+    font-family: VerdanaEmbedded;
+    drop-shadow-enabled: true;
+    drop-shadow-color: #505153;
+    drop-shadow-distance: 5;
+}
+
+s|Window {
+    background-color: #505153;
+}
+
+s|BorderContainer {
+    background-color: #505153;
+    border-color: #232323;
+    border-weight: 2;
+}
+
+s|Button {
+    font-family: VerdanaEmbedded;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 12;
+    accent-color: #505153;
+    chrome-color: #959595;
 }
 
 mx|TabNavigator {
     background-color: #505153;
+}
+
+
+.iFoneCB {
+    font-family: VerdanaEmbedded;
+    font-size: 12;
+    font-weight: bold;
+    color: #000000;
+}
+
+@font-face {
+    src: url('/../assets/fonts/verdana.TTF');
+    font-family: VerdanaEmbedded;
+    font-anti-alias-type:advanced;
+    font-weight: normal;
+    embed-as-cff: false;
+}
+
+@font-face {
+    src: url('/../assets/fonts/Verdana_Bold.TTF');
+    font-family: VerdanaEmbedded;
+    font-anti-alias-type:advanced;
+    font-weight: bold;
+    embed-as-cff: false;
 }

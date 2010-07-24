@@ -25,10 +25,12 @@
  * 
  * @author Matt Bolt [mbolt35&#64;gmail.com]
  -->
-<s:BorderContainer 
+<s:Group 
     xmlns:fx="http://ns.adobe.com/mxml/2009" 
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx" 
+    xmlns:ifone="com.mattbolt.ifone.*"
+    xmlns:local="*"
     mouseDown="onMouseDown(event);"
     width="400" height="{titleContainer.height}">
 
@@ -111,27 +113,43 @@
     </fx:Script>
     
     <s:BorderContainer id="titleContainer"
-        backgroundImage="@Embed(source='/../assets/images/title-bar.png')" 
+        backgroundImage="@Embed(source='/../assets/images/title-bar2.png')" 
         backgroundImageFillMode="scale" 
+        borderWeight="0"
         left="0" top="0" 
-        width="100%" height="29">
+        width="100%" height="35">
         <s:layout>
             <s:HorizontalLayout 
                 verticalAlign="middle"
-                paddingBottom="2" paddingTop="1" 
-                paddingLeft="2" paddingRight="4" 
+                paddingBottom="0" paddingTop="0" 
+                paddingLeft="5" paddingRight="5" 
                 gap="1"/>
         </s:layout>
+        <!--
         <mx:Image 
             source="@Embed(source='/../assets/icons/icon32.png')"
             width="24" height="24" 
             smoothBitmapContent="true" cacheAsBitmap="true"
             maintainAspectRatio="true" scaleContent="true"/>
-        <s:Label fontFamily="Arial" color="#ABABAB" text="{windowTitle}"/>
+        -->
+        <ifone:IFoneButton 
+            height="25" 
+            fontSize="11"
+            label="Cancel"
+            click="if (_window) { _window.close(); }"/>
         <mx:Spacer width="100%"/>
-        <s:Label id="closeButton" text="X" mouseEnabled="true" fontFamily="Arial Black" fontSize="14" color="#ABABAB"
-            click="if (_window) { _window.close(); }"
-            mouseOver="closeButton.setStyle('color', 0xDEDEDE);"
-            mouseOut="closeButton.setStyle('color', 0xABABAB);"/>
+        <s:Label fontFamily="VerdanaEmbedded" fontSize="13" fontWeight="bold" color="#FFFFFF" text="{windowTitle}">
+            <s:filters>
+                <fx:Array>
+                    <mx:DropShadowFilter blurX="0" blurY="1" distance="1" quality="3" inner="false" angle="90" />
+                </fx:Array>
+            </s:filters>
+        </s:Label>
+        <mx:Spacer width="100%"/>
+        <ifone:IFoneButton 
+            height="25" 
+            fontSize="11"
+            label="Save"
+            click="if (_window) { _window.close(); }"/>
     </s:BorderContainer>
-</s:BorderContainer>
+</s:Group>

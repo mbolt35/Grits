@@ -15,7 +15,7 @@
 
 	<!-- A universally unique application identifier. Must be unique across all AIR applications.
 	     Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-	<id>GritsLogServer</id>
+	<id>com.mattbolt.gritsGritsLogServer</id>
 
 	<!-- Used as the filename for the application. Required. -->
 	<filename>GritsLogServer</filename>
@@ -36,7 +36,7 @@
 	<!-- <description></description> -->
 
 	<!-- Copyright information. Optional -->
-	<!-- <copyright>Copyright(C) 2010, Matt Bolt</copyright> -->
+	<copyright>Copyright(C) 2010, Matt Bolt</copyright>
 
 	<!-- Publisher ID. Used if you're updating an application created prior to 1.5.3 -->
 	<!-- <publisherID></publisherID> -->
@@ -54,7 +54,7 @@
 		<systemChrome>none</systemChrome>
 
 		<!-- Whether the window is transparent. Only applicable when systemChrome is none. Optional. Default false. -->
-		<transparent>false</transparent>
+		<transparent>true</transparent>
 
 		<!-- Whether the window is initially visible. Optional. Default false. -->
 		<!-- <visible></visible> -->

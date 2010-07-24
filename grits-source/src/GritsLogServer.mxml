@@ -24,11 +24,14 @@
     xmlns:s="library://ns.adobe.com/flex/spark"
     xmlns:mx="library://ns.adobe.com/flex/mx"
     xmlns:grits="com.mattbolt.grits.view.*"
+    xmlns:ifone="com.mattbolt.ifone.*"
 	creationPolicy="all"
     width="800" height="300"
 	frameRate="60"
 	showStatusBar="false"
-    creationComplete="init();">
+    backgroundAlpha="0"
+    creationComplete="init();"
+    close="onClose();">
     
     <fx:Style source="GritsLogServerStyles.css"/>
     
@@ -40,21 +43,19 @@
     </s:layout>
 
     <fx:Declarations>
-        <!-- Place non-visual elements (e.g., services, value objects) here -->
+        
     </fx:Declarations>
 
     <fx:Script>
         <![CDATA[
-            //----------------------------------
-            //  imports
-            //----------------------------------
-            
             import com.mattbolt.grits.Grits;
             import com.mattbolt.grits.GritsBuilder;
             import com.mattbolt.grits.config.GritsConfiguration;
             import com.mattbolt.grits.messaging.defaultMessageParser;
             import com.mattbolt.grits.net.defaultGritsServer;
-
+            import com.mattbolt.grits.view.GritsConfigurationPanel;
+            
+            import mx.containers.TabNavigator;
             
             //--------------------------------------------------------------------------
             //
@@ -67,7 +68,6 @@
              * server socket connection
              */
             private var _grits:Grits;
-
             
             //--------------------------------------------------------------------------
             //
@@ -85,10 +85,20 @@
                     .boundTo("localhost", 4444)
                     .parsingMessagesWith(defaultMessageParser())
                     .configuredWith(new GritsConfiguration())
-                    .usingContainer(tab)
+                    .usingContainer(new TabNavigator())
                     .build();
 
                 _grits.start();
+                
+                GritsConfigurationPanel.show();
+            }
+            
+            /**
+             * @private
+             * handler for this window closing
+             */
+            private function onClose():void {
+                nativeApplication.exit(0);
             }
             
             
@@ -110,20 +120,14 @@
         ]]>
     </fx:Script>
 
-    <grits:GritsWindowTitleBar 
-        left="0" top="0"
-        width="100%"
-        nativeWindow="{nativeWindow}" 
-        windowTitle="Grits Socket Output Server"/>
-    <s:Group width="100%" height="100%">
-        <s:layout>
-            <s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
-        </s:layout>
-        <grits:GritsCheckBox width="400" label="Do you like this Component?" selected="true"/>
-        <grits:GritsCheckBox width="400" label="Do you like bacon?" selected="false"/>
-        <grits:GritsCheckBox width="400" label="Are you feeling better?" selected="true"/>
-        <grits:GritsCheckBox width="400" label="Are you over 21?" selected="true"/>
-    </s:Group>
-    <mx:TabNavigator id="tab" left="1" right="1" height="100%"/>
+    <mx:Canvas width="100%" height="100%" backgroundColor="#505153">
+        <grits:GritsWindowTitleBar 
+            left="0" top="0"
+            width="100%"
+            nativeWindow="{nativeWindow}" 
+            windowTitle="Edit Alarm"/>
+        
+        <!-- <mx:TabNavigator id="tab" left="1" right="1" height="100%"/>-->
+    </mx:Canvas>
     
 </s:WindowedApplication>
