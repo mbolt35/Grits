@@ -25,18 +25,155 @@
  * 
  * @author Matt Bolt [mbolt35&#64;gmail.com]
  -->
-<s:Button
+<s:Group
     xmlns:fx="http://ns.adobe.com/mxml/2009" 
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx"
-    height="25"
-    cornerRadius="5"
-    creationComplete="labelDisplay.filters = shadowFilters;">
+    mouseDown="onMouseDown(event)"
+    mouseDownOutside="onMouseDownOutside(event)"
+    mouseUp="onMouseUp(event)"
+    mouseOver="onMouseOver(event)"
+    mouseOut="onMouseOut(event)"
+    height="32">
+
+    <fx:Script>
+        <![CDATA[
+            import mx.events.FlexMouseEvent;
+            
+            /**
+             * @private
+             * handles mouse down event
+             */
+            private function onMouseDown(event:MouseEvent):void {
+                currentState = "down";
+                
+                event.stopImmediatePropagation();
+            }
+
+            /**
+             * @private
+             * handles mouse down outside event
+             */
+            private function onMouseDownOutside(event:FlexMouseEvent):void {
+                currentState = "up";
+            }
+            
+            /**
+             * @private
+             * handles mouse up event
+             */
+            private function onMouseOver(event:MouseEvent):void {                
+                if (event.buttonDown) {
+                    currentState = "down";
+                    return;
+                }
+                
+                currentState = "over";
+            }
+
+            /**
+             * @private
+             * handles mouse up event
+             */
+            private function onMouseOut(event:MouseEvent):void {
+                currentState = "up";
+            }
+
+            /**
+             * @private
+             * handles mouse up event
+             */
+            private function onMouseUp(event:MouseEvent):void {
+                if (currentState == "down") {
+                    dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+                }
+                
+                currentState = "up";
+                event.stopImmediatePropagation();
+            }
+
+        ]]>
+    </fx:Script>
+
     
     <fx:Declarations>
-        <fx:Array id="shadowFilters">
-            <mx:DropShadowFilter blurX="0" blurY="1" distance="1" quality="3" inner="false" angle="90" />
-        </fx:Array>
+        <fx:String id="label"/>
     </fx:Declarations>
 
-</s:Button>
+    <s:states>
+        <s:State name="up"/>
+        <s:State name="over"/>
+        <s:State name="down"/>
+    </s:states>
+    
+    <s:VGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0" verticalAlign="top" horizontalAlign="left" includeIn="up">
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6"  paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb1.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb2.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb3.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb4.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb5.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="100%" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb6.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb7.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb8.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/up/bb9.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+    </s:VGroup>
+    
+    <s:VGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0" verticalAlign="top" horizontalAlign="left" includeIn="over">
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6"  paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb1.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb2.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb3.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb4.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb5.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="100%" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb6.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb7.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb8.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/over/bb9.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+    </s:VGroup>
+    
+    <s:VGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0" verticalAlign="top" horizontalAlign="left" includeIn="down">
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6"  paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb1.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb2.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb3.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb4.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb5.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="100%" height="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb6.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"/>
+        </s:HGroup>
+        <s:HGroup width="100%" height="6" maxHeight="6" minHeight="6" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb7.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb8.png')" autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="6" maxHeight="6" minHeight="6" width="100%"/>
+            <mx:Image source="@Embed(source='/../assets/skins/ifone-button/down/bb9.png')" autoLoad="true" scaleContent="false" maintainAspectRatio="true"/>
+        </s:HGroup>
+    </s:VGroup>
+    
+    <!--- 
+     * @private 
+     -->
+    <s:Label id="labelDisplay"
+        textAlign="center"
+        verticalAlign="middle"
+        text="{label}"
+        color="#FFFFFF"
+        maxDisplayedLines="1"
+        horizontalCenter="0" verticalCenter="1"
+        left="10" right="10" top="2" bottom="2">
+        <s:filters>
+            <mx:DropShadowFilter color="#282828" blurX="1" blurY="1" distance="1" quality="3" inner="true" angle="90" alpha="0.25" />
+        </s:filters>
+    </s:Label>
+    
+</s:Group>

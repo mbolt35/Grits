@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<!---
+* This class represents an iphone style checkbox component.
+*
+* @author Matt Bolt [mbolt35&#64;gmail.com]
+-->
+<s:HGroup
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"
+    xmlns:ifone="com.mattbolt.ifone.*"
+    creationComplete="onCreationComplete();">
+
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+
+    <!--
+    <fx:Style>
+        @namespace s "library://ns.adobe.com/flex/spark";
+        @namespace mx "library://ns.adobe.com/flex/mx";
+        @namespace ifone "com.mattbolt.ifone.*";
+
+        .defaultCheckBoxLabelStyle {
+            font-family: VerdanaEmbedded;
+            font-size: 11;
+            color: #ABABAB;
+        }
+    </fx:Style>
+    -->
+    
+    <fx:Metadata>
+        /**
+         * @eventType selectedChange
+         */
+        [Event(name='selectedChange', type='flash.events.Event')]
+    </fx:Metadata>
+
+    <fx:Script>
+        <![CDATA[
+
+            /**
+             * @private
+             * the selected value backing variable
+             */
+            private var _selected:Boolean = false;
+            
+            /**
+             * @private
+             * on creation complete
+             */
+            private function onCreationComplete():void {
+                currentState = label != null ? "withLabel" : "withoutLabel";
+            }
+
+            [Bindable]
+
+            /**
+             * This property is set to <code>true</code> if the checkbox is selected
+             *
+             * @default false
+             */
+            public function get selected():Boolean {
+                return _selected;
+            }
+
+            /**
+             * @private
+             */
+            public function set selected(value:Boolean):void {
+                if (_selected == value) {
+                    return;
+                }
+
+                _selected = value;
+
+                dispatchEvent(new Event("selectedChange"));
+            }
+
+            [Bindable]
+
+            /**
+             * This property contains the style name for the label
+             *
+             * @default defaultCheckBoxLabelStyle
+             */
+            public var labelStyleName:String = "defaultCheckBoxLabelStyle";
+
+            [Bindable]
+
+            /**
+             * This property contains the label for the check box
+             */
+            public var label:String;
+
+        ]]>
+    </fx:Script>
+
+    <s:Group width="100%" height="100%" includeIn="withLabel">
+        <s:layout>
+            <s:HorizontalLayout horizontalAlign="left" verticalAlign="middle"/>
+        </s:layout>
+        <s:Label styleName="{labelStyleName}" text="{label}" verticalCenter="1"/>
+    </s:Group>
+    
+    <mx:Spacer width="100%" includeIn="withLabel"/>
+
+    <ifone:IFoneCheckBoxBase
+        id="checkBoxBase"
+        currentState="{selected ? 'Selected' : 'Deselected'}"
+        currentStateChange="selected = checkBoxBase.currentState == 'Selected' ? true : false"/>
+
+    <s:states>
+        <s:State name="withoutLabel"/>
+        <s:State name="withLabel"/>
+    </s:states>
+</s:HGroup>

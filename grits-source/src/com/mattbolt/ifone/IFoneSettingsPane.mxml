@@ -111,7 +111,7 @@
     </fx:Script>
     
     <s:layout>
-        <s:VerticalLayout paddingBottom="5" paddingTop="5" paddingLeft="10" paddingRight="10" gap="-1"/>
+        <s:VerticalLayout paddingBottom="5" paddingTop="5" paddingLeft="10" paddingRight="10" gap="-2"/>
     </s:layout>
     
 </s:Group>

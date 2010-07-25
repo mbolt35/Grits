@@ -29,7 +29,7 @@
     xmlns:fx="http://ns.adobe.com/mxml/2009" 
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx" 
-    width="25" height="25">
+    width="28" height="28">
     
     <fx:Script>
         <![CDATA[
@@ -53,7 +53,7 @@
     </fx:Script>
     
     <s:filters>
-        <s:BevelFilter distance="1" quality="3"/>
+        <s:BevelFilter angle="90" blurX="0" blurY="1" distance="1" quality="5"/>
     </s:filters>
     
     <s:Rect width="100%" height="100%" radiusX="{iconRadius}" radiusY="{iconRadius}"> 
@@ -61,14 +61,14 @@
            <s:SolidColor color="#282828"/>
         </s:fill>
         <s:stroke>
-            <s:SolidColorStroke color="#000000" caps="round" pixelHinting="true" weight="1"/>
+            <s:SolidColorStroke color="#000000" caps="round" weight="1" pixelHinting="true" joints="round" alpha="0.75"/>
         </s:stroke>
     </s:Rect>
     
     <!--- 
      * @private 
      -->
-    <s:Group id="masker" x="1" y="1" width="100%" height="100%" blendMode="alpha">
+    <s:Group id="masker" width="100%" height="100%">
         <s:Rect width="100%" height="100%" radiusX="{iconRadius}" radiusY="{iconRadius}"> 
             <s:fill>
                 <s:SolidColor color="#FF0000"/>
@@ -89,9 +89,15 @@
     </s:Group>
     
     <s:Group width="100%" height="100%" mask="{masker}">
-        <s:Ellipse x="-10" y="-17" width="45" height="30" >
+        <s:Ellipse x="-11" y="-24" width="50" height="40">
             <s:fill>
-                <s:SolidColor color="#FFFFFF" alpha="0.3"/>
+                <!-- <s:SolidColor color="#FFFFFF" alpha="0.3"/>-->
+                <s:LinearGradient rotation="90">
+                    <s:entries>
+                        <s:GradientEntry color="#FFFFFF" ratio="0.75" alpha="0.4" />
+                        <s:GradientEntry color="#676767" ratio="0.99" alpha="0.2"/>
+                    </s:entries>
+                </s:LinearGradient>
             </s:fill>
         </s:Ellipse>
     </s:Group>

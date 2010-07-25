@@ -35,9 +35,18 @@ s|Button {
     font-family: VerdanaEmbedded;
     color: #FFFFFF;
     font-weight: bold;
-    font-size: 12;
+    font-size: 11;
+    tracking-right: -0.45;
     accent-color: #505153;
     chrome-color: #959595;
+}
+
+s|Label {
+    font-family: VerdanaEmbedded;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 11;
+    tracking-right: -0.25;
 }
 
 mx|TabNavigator {
@@ -47,10 +56,20 @@ mx|TabNavigator {
 
 .iFoneCB {
     font-family: VerdanaEmbedded;
-    font-size: 12;
+    font-size: 16;
     font-weight: bold;
+    tracking-right: -0.45;
     color: #000000;
 }
+
+.settingsNodeLabel {
+    font-family: VerdanaEmbedded;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 16;
+    tracking-right: -0.45;
+}
+    
 
 @font-face {
     src: url('/../assets/fonts/verdana.TTF');
@@ -58,6 +77,7 @@ mx|TabNavigator {
     font-anti-alias-type:advanced;
     font-weight: normal;
     embed-as-cff: false;
+    tracking-right: -0.5;
 }
 
 @font-face {
@@ -66,4 +86,5 @@ mx|TabNavigator {
     font-anti-alias-type:advanced;
     font-weight: bold;
     embed-as-cff: false;
+    tracking-right: -0.5;
 }
