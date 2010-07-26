@@ -53,14 +53,19 @@
 
     <fx:Script>
         <![CDATA[
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
             import com.mattbolt.grits.Grits;
             import com.mattbolt.grits.GritsBuilder;
             import com.mattbolt.grits.config.GritsConfiguration;
             import com.mattbolt.grits.messaging.defaultMessageParser;
             import com.mattbolt.grits.net.defaultGritsServer;
-            import com.mattbolt.grits.view.GritsConfigurationPanel;
+            import com.mattbolt.grits.view.GritsSettingsWindow;
             
             import mx.containers.TabNavigator;
+            
             
             //--------------------------------------------------------------------------
             //
@@ -73,6 +78,7 @@
              * server socket connection
              */
             private var _grits:Grits;
+            
             
             //--------------------------------------------------------------------------
             //
@@ -95,7 +101,7 @@
 
                 _grits.start();
                 
-                GritsConfigurationPanel.show();
+                GritsSettingsWindow.show();
             }
             
             /**
@@ -122,10 +128,11 @@
                 return super.nativeWindow;
             }
 
+            
         ]]>
     </fx:Script>
 
-    <s:BorderContainer width="100%" height="100%" backgroundImage="@Embed(source='/../assets/images/bg.png')" backgroundImageFillMode="repeat" borderWeight="0">
+    <s:BorderContainer width="100%" height="100%" backgroundImage="@Embed(source='/../assets/skins/ifone-window/ifone-window-bg.png')" backgroundImageFillMode="repeat" borderWeight="0">
         <ifone:IFoneTitleBar 
             left="0" top="0"
             width="100%"

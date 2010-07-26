@@ -21,7 +21,7 @@
 -->
 
 <!---
- * This class represents a button with a drop shadow label.
+ * This class represents an iphone styled button with a drop shadow label.
  * 
  * @author Matt Bolt [mbolt35&#64;gmail.com]
  -->
@@ -36,9 +36,29 @@
     mouseOut="onMouseOut(event)"
     height="32">
 
+    <fx:Declarations>
+        
+        <!--- 
+         * This property contains the label used with the button.
+         -->
+        <fx:String id="label"/>
+        
+    </fx:Declarations>
+    
     <fx:Script>
         <![CDATA[
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
             import mx.events.FlexMouseEvent;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Event Handlers: MouseEvent
+            //
+            //--------------------------------------------------------------------------
             
             /**
              * @private
@@ -94,11 +114,6 @@
 
         ]]>
     </fx:Script>
-
-    
-    <fx:Declarations>
-        <fx:String id="label"/>
-    </fx:Declarations>
 
     <s:states>
         <s:State name="up"/>

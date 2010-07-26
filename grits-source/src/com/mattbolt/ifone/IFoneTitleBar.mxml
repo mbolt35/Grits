@@ -137,7 +137,7 @@
     </s:states>
     
     <s:BorderContainer id="titleContainer"
-        backgroundImage="@Embed(source='/../assets/images/title-bar3.png')" 
+        backgroundImage="@Embed(source='/../assets/skins/ifone-title-bar/ifone-title-bar.png')" 
         backgroundImageFillMode="scale" 
         borderWeight="0"
         left="0" top="0" 

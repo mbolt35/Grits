@@ -1,6 +1,11 @@
 /* CSS file */
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
+@namespace ifone "com.mattbolt.ifone.*";
+
+ifone|IFoneWindowSkin {
+    backgroundImage: Embed(source='/../assets/skins/ifone-window/ifone-window-bg.png');
+}
 
 s|Application {
     font-family: VerdanaEmbedded;

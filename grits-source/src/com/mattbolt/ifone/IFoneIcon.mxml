@@ -56,6 +56,9 @@
         <s:BevelFilter angle="90" blurX="0" blurY="1" distance="1" quality="5"/>
     </s:filters>
     
+    <!--- 
+     * @private 
+     -->
     <s:Rect width="100%" height="100%" radiusX="{iconRadius}" radiusY="{iconRadius}"> 
         <s:fill>
            <s:SolidColor color="#282828"/>
@@ -79,6 +82,9 @@
         </s:Rect>
     </s:Group>
     
+    <!--- 
+     * @private 
+     -->
     <s:Group width="100%" height="100%" mask="{masker}">
         <s:layout>
             <s:HorizontalLayout verticalAlign="middle" horizontalAlign="center"/>
@@ -88,10 +94,12 @@
             maintainAspectRatio="true" scaleContent="true"/>
     </s:Group>
     
+    <!--- 
+     * @private 
+     -->
     <s:Group width="100%" height="100%" mask="{masker}">
         <s:Ellipse x="-11" y="-24" width="50" height="40">
             <s:fill>
-                <!-- <s:SolidColor color="#FFFFFF" alpha="0.3"/>-->
                 <s:LinearGradient rotation="90">
                     <s:entries>
                         <s:GradientEntry color="#FFFFFF" ratio="0.75" alpha="0.4" />

@@ -37,6 +37,10 @@
             
     <fx:Script>
         <![CDATA[
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
             import mx.automation.IAutomationObject;
             import mx.core.IFlexDisplayObject;
             import mx.core.IVisualElement;
@@ -81,7 +85,7 @@
                     node = IFoneSettingsNode(element);
                 } else {
                     node = new IFoneSettingsNode();
-                    node.componentContainer.addElement(element);
+                    node.addElement(element);
                 }
                 
                 node.percentWidth = 100;

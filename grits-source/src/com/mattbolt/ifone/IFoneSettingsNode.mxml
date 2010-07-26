@@ -25,11 +25,12 @@
 * 
 * @author Matt Bolt [mbolt35&#64;gmail.com]
 -->
-<s:Group 
+<s:SkinnableContainer 
     xmlns:fx="http://ns.adobe.com/mxml/2009" 
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx" 
     xmlns:ifone="com.mattbolt.ifone.*"
+    skinClass="com.mattbolt.ifone.IFoneSettingsNodeSkin"
     creationComplete="onCreationComplete();"
     width="300" height="43">
     
@@ -71,31 +72,55 @@
     
     <fx:Script>
         <![CDATA[
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
             import mx.core.IUIComponent;
             import mx.core.IVisualElement;
             
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * components to add upon creation complete
+             */
+            private var _componentsToAdd:Array = [];
 
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Event Handlers
+            //
+            //--------------------------------------------------------------------------
+            
             /**
              * @private
              * handle creation complete
              */
             private function onCreationComplete():void {
+                /*
                 if (components) {
                     for each (var element:IVisualElement in components) {
                         componentContainer.addElement(element);
                     }
                 }
+                */
                 
-                currentState = "normal";
                 
-                if (iconImage && label) {
-                    currentState = "iconAndLabel";
-                } else if (iconImage && !label) {
-                    currentState = "iconOnly";
-                } else if (!iconImage && label) {
-                    currentState = "labelOnly";
-                } 
             }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
             
             [Bindable]
             
@@ -103,42 +128,8 @@
              * This property is the image class to use for the icon.
              */
             public var iconImage:Class;
+            
         ]]>
     </fx:Script>
 
-    <!--- 
-     * @private 
-     -->
-    <s:Rect id="backRect" x="0" y="0" width="100%" height="100%" 
-        bottomLeftRadiusX="{isBottom ? radius : 0}" bottomLeftRadiusY="{isBottom ? radius : 0}" 
-        bottomRightRadiusX="{isBottom ? radius : 0}" bottomRightRadiusY="{isBottom ? radius : 0}"
-        topLeftRadiusX="{isTop ? radius : 0}" topLeftRadiusY="{isTop ? radius : 0}"
-        topRightRadiusX="{isTop ? radius : 0}" topRightRadiusY="{isTop ? radius : 0}">
-        <s:fill>
-            <s:SolidColor color="#FFFFFF"/>
-        </s:fill>
-        
-        <s:stroke>
-            <s:SolidColorStroke color="#ABABAB" pixelHinting="true" caps="round" weight="2" alpha="0.5"/>
-        </s:stroke>
-    </s:Rect>
-    
-    <!--- 
-     * @private 
-     -->
-    <s:HGroup id="componentContainer" x="0" y="0" width="100%" height="100%" horizontalAlign="left" verticalAlign="middle" paddingLeft="10" paddingRight="10"> 
-        <ifone:IFoneIcon includeIn="iconOnly,iconAndLabel" icon="{iconImage}"/>
-        <s:Label includeIn="labelOnly,iconAndLabel" text="{label}" styleName="{labelStyleName}"/>
-        <mx:Spacer includeIn="iconOnly,labelOnly,iconAndLabel" width="100%"/>
-    </s:HGroup>
-    
-    
-    <!-- States and Transitions -->
-    <s:states>
-        <s:State name="normal"/>
-        <s:State name="iconOnly"/>
-        <s:State name="labelOnly"/>
-        <s:State name="iconAndLabel"/>
-    </s:states>
-        
-</s:Group>
+</s:SkinnableContainer>

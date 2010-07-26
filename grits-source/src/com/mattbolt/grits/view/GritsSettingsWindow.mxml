@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<!---
+* This class is used as the configuration panel for Grits.
+* 
+* @author Matt Bolt [mbolt35&#64;gmail.com]
+-->
+<ifone:IFoneWindow 
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/mx" 
+    xmlns:ifone="com.mattbolt.ifone.*"
+    xmlns:grits="com.mattbolt.grits.view.*"
+    systemChrome="none"
+    showStatusBar="false"
+    title="Grits Settings"
+    width="350" height="250">
+    
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Static Methods
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * This method creates, displays, and returns a new <code>GritsConfigurationPanel</code>.
+             */
+            public static function show():GritsSettingsWindow {
+                var config:GritsSettingsWindow = new GritsSettingsWindow();
+                config.closeButtonLabel = "Save";
+                config.contextButtonLabel = "Cancel";
+                
+                config.open();
+                
+                return config;
+            }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Event Handlers
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * handler for the flash trace log changed
+             */
+            private function onLogFlashTracesChanged():void {
+                trace("changed to: " + logTrace.selected);
+            }
+            
+            /**
+             * @private
+             * handler for the flash trace log changed
+             */
+            private function onOkClicked():void {
+                this.close();
+            }
+            
+            /**
+             * @private
+             * handler for the flash trace log changed
+             */
+            private function onCancelClicked():void {
+                this.close();
+            }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
+            
+            [Bindable("nativeWindowChanged")]
+            
+            /**
+             * @inheritDoc
+             */
+            public override function get nativeWindow():NativeWindow {
+                return super.nativeWindow;
+            }
+ 
+        ]]>
+    </fx:Script>
+    
+    <ifone:IFoneSettingsPane width="100%" height="100%">
+        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Tabbed" iconImage="@Embed(source='/../assets/icons/tabs20.png')" width="100%">
+            <ifone:IFoneCheckBox selected="true"/>
+        </ifone:IFoneSettingsNode>
+        
+        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Save Logs" width="100%">
+            <ifone:IFoneCheckBox selected="false"/>
+        </ifone:IFoneSettingsNode>
+        
+        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Flash Trace" width="100%">
+            <ifone:IFoneCheckBox id="logTrace" selected="false" selectedChange="onLogFlashTracesChanged();"/>
+        </ifone:IFoneSettingsNode>
+    </ifone:IFoneSettingsPane>
+    
+</ifone:IFoneWindow>
