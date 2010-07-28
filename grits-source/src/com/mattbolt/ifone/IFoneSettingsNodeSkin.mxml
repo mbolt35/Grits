@@ -31,8 +31,8 @@
     xmlns:mx="library://ns.adobe.com/flex/mx"
     xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
     xmlns:ifone="com.mattbolt.ifone.*"
-    creationComplete="onCreationComplete();"
-    alpha.disabled="0.5">
+    alpha.disable="0.5"
+    creationComplete="onCreationComplete();">
     
     <fx:Metadata>
         /**
@@ -44,30 +44,12 @@
     <fx:Script>
         <![CDATA[
             
-            [Bindable]
-            
-            /**
-             * @private
-             * a reference to the owner's properties
-             */
-            private var _parentNode:IFoneSettingsNode;
-        
             /**
              * @private
              * handle creation complete
              */
             private function onCreationComplete():void {
                 currentState = "normal";
-                
-                _parentNode = IFoneSettingsNode(this.owner);
-                
-                if (_parentNode.iconImage && _parentNode.label) {
-                    currentState = "iconAndLabel";
-                } else if (_parentNode.iconImage && !_parentNode.label) {
-                    currentState = "iconOnly";
-                } else if (!_parentNode.iconImage && _parentNode.label) {
-                    currentState = "labelOnly";
-                } 
             }
             
             /**
@@ -77,26 +59,48 @@
                 super.updateDisplayList(unscaledWidth, unscaledHeight);
             }
             
+            /**
+             * @inheritDoc
+             */
+            protected override function stateChanged(oldState:String, newState:String, recursive:Boolean):void {
+                super.stateChanged(oldState, newState, recursive);
+                
+                if (currentState == "normal" || currentState == "disabled") {
+                    if (hostComponent.iconImage && hostComponent.label) {
+                        currentState = hostComponent.enabled ? "iconAndLabel" : "iconAndLabelDisabled";
+                    } else if (hostComponent.iconImage && !hostComponent.label) {
+                        currentState = hostComponent.enabled ? "iconOnly" : "iconOnlyDisabled";
+                    } else if (!hostComponent.iconImage && hostComponent.label) {
+                        currentState = hostComponent.enabled ? "labelOnly" : "labelOnlyDisabled";
+                    } 
+                }
+            }
+            
         ]]>
     </fx:Script>
     
     <!-- States and Transitions -->
     <s:states>
         <s:State name="normal"/>
-        <s:State name="iconOnly"/>
-        <s:State name="labelOnly"/>
-        <s:State name="iconAndLabel"/>
         <s:State name="disabled"/>
+        
+        <s:State name="iconOnly" stateGroups="icon"/>
+        <s:State name="labelOnly" stateGroups="label"/>
+        <s:State name="iconAndLabel" stateGroups="icon,label"/>
+        
+        <s:State name="iconOnlyDisabled" stateGroups="icon,disable"/>
+        <s:State name="labelOnlyDisabled" stateGroups="label,disable"/>
+        <s:State name="iconAndLabelDisabled" stateGroups="icon,label,disable"/>
     </s:states>
     
     <!--- 
      * @private 
      -->
     <s:Rect id="backRect" x="0" y="0" width="100%" height="100%" 
-        bottomLeftRadiusX="{_parentNode.isBottom ? _parentNode.radius : 0}" bottomLeftRadiusY="{_parentNode.isBottom ? _parentNode.radius : 0}" 
-        bottomRightRadiusX="{_parentNode.isBottom ? _parentNode.radius : 0}" bottomRightRadiusY="{_parentNode.isBottom ? _parentNode.radius : 0}"
-        topLeftRadiusX="{_parentNode.isTop ? _parentNode.radius : 0}" topLeftRadiusY="{_parentNode.isTop ? _parentNode.radius : 0}"
-        topRightRadiusX="{_parentNode.isTop ? _parentNode.radius : 0}" topRightRadiusY="{_parentNode.isTop ? _parentNode.radius : 0}">
+        bottomLeftRadiusX="{hostComponent.isBottom ? hostComponent.radius : 0}" bottomLeftRadiusY="{hostComponent.isBottom ? hostComponent.radius : 0}" 
+        bottomRightRadiusX="{hostComponent.isBottom ? hostComponent.radius : 0}" bottomRightRadiusY="{hostComponent.isBottom ? hostComponent.radius : 0}"
+        topLeftRadiusX="{hostComponent.isTop ? hostComponent.radius : 0}" topLeftRadiusY="{hostComponent.isTop ? hostComponent.radius : 0}"
+        topRightRadiusX="{hostComponent.isTop ? hostComponent.radius : 0}" topRightRadiusY="{hostComponent.isTop ? hostComponent.radius : 0}">
         
         <s:fill>
             <s:SolidColor color="#FFFFFF"/>
@@ -111,9 +115,9 @@
      * @private 
      -->
     <s:HGroup id="contentGroup" x="0" y="0" width="100%" height="100%" horizontalAlign="left" verticalAlign="middle" paddingLeft="10" paddingRight="10"> 
-        <ifone:IFoneIcon includeIn="iconOnly,iconAndLabel" icon="{_parentNode.iconImage}"/>
-        <s:Label includeIn="labelOnly,iconAndLabel" text="{_parentNode.label}" styleName="{_parentNode.labelStyleName}"/>
-        <mx:Spacer includeIn="iconOnly,labelOnly,iconAndLabel" width="100%"/>
+        <ifone:IFoneIcon includeIn="icon" icon="{hostComponent.iconImage}"/>
+        <s:Label includeIn="label" text="{hostComponent.label}" styleName="{hostComponent.labelStyleName}"/>
+        <mx:Spacer includeIn="icon,label" width="100%"/>
     </s:HGroup>
 
 </s:Skin>

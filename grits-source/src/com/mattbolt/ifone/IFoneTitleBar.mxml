@@ -34,9 +34,26 @@
     mouseDown="onMouseDown(event);"
     creationComplete="onCreationComplete();">
 
+    <fx:Metadata>
+        //----------------------------------
+        //  events
+        //----------------------------------
+        
+        /**
+        * @eventType com.mattbolt.ifone.events.IFoneWindowEvent.BACK_CLICK
+        */
+        [Event(name="backClick", type="com.mattbolt.ifone.events.IFoneWindowEvent")]
+        
+        /**
+        * @eventType com.mattbolt.ifone.events.IFoneWindowEvent.CLOSE_CLICK
+        */
+        [Event(name="closeClick", type="com.mattbolt.ifone.events.IFoneWindowEvent")]
+    </fx:Metadata>
+    
+    
     <fx:Declarations>
-        <fx:String id="leftButtonText"/>
-        <fx:String id="rightButtonText"/>
+        <fx:String id="backButtonText"/>
+        <fx:String id="closeButtonText"/>
     </fx:Declarations>
     
     <fx:Script>
@@ -74,11 +91,11 @@
             private function onCreationComplete():void {
                 currentState = "none";
                 
-                if (leftButtonText && rightButtonText) {
+                if (backButtonText && closeButtonText) {
                     currentState = "both";
-                } else if (leftButtonText && !rightButtonText) {
+                } else if (backButtonText && !closeButtonText) {
                     currentState = "leftOnly";
-                } else if (!leftButtonText && rightButtonText) {
+                } else if (!backButtonText && closeButtonText) {
                     currentState = "rightOnly";
                 }
             }
@@ -149,15 +166,22 @@
                 paddingLeft="5" paddingRight="5" 
                 gap="1"/>
         </s:layout>
-        <ifone:IFoneButton includeIn="leftOnly,both"
+        <fx:Script>
+            <![CDATA[
+                import com.mattbolt.ifone.events.IFoneWindowEvent;
+            ]]>
+        </fx:Script>
+        <ifone:IFoneButton
+            includeIn="leftOnly,both"
             fontSize="11"
-            label="{leftButtonText}"
-            click="if (_window) { _window.close(); }"/>
+            label="{backButtonText}"
+            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.BACK_CLICK));"/>
         <mx:Spacer width="100%"/>
-        <ifone:IFoneButton includeIn="rightOnly,both"
+        <ifone:IFoneButton
+            includeIn="rightOnly,both"
             fontSize="11"
-            label="{rightButtonText}"
-            click="if (_window) { _window.close(); }"/>
+            label="{closeButtonText}"
+            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.CLOSE_CLICK));"/>
     </s:BorderContainer>
     
     <s:Label 

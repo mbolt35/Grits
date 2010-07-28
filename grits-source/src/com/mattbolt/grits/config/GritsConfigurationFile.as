@@ -106,6 +106,19 @@ package com.mattbolt.grits.config {
          * @default false
          */
         public var saveLogs:Boolean;
+        
+        /**
+         * This property is set to <code>true</code> if the user wishes to import the flash
+         * trace <code>logfile.txt</code> into their logs.
+         * 
+         * @default false
+         */
+        public var flashTraceEnabled:Boolean
+        
+        /**
+         * This property contains the file location of the flash log file.
+         */
+        public var flashLogFileLocation:String;
 
     }
 

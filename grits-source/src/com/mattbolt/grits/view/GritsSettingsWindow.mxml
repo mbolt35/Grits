@@ -34,7 +34,9 @@
     systemChrome="none"
     showStatusBar="false"
     title="Grits Settings"
-    width="350" height="250">
+    backClick="this.close();"
+    closeClick="onSaveClick()"
+    width="350" height="300">
     
     <fx:Declarations>
         <!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -42,6 +44,8 @@
     
     <fx:Script>
         <![CDATA[
+            import com.mattbolt.grits.config.GritsConfiguration;
+            import com.mattbolt.grits.enum.GritsWindowOptions;
             
             //--------------------------------------------------------------------------
             //
@@ -52,15 +56,32 @@
             /**
              * This method creates, displays, and returns a new <code>GritsConfigurationPanel</code>.
              */
-            public static function show():GritsSettingsWindow {
+            public static function show(gritsConfig:GritsConfiguration):GritsSettingsWindow {
                 var config:GritsSettingsWindow = new GritsSettingsWindow();
+                config.gritsConfiguration = gritsConfig;
+                
                 config.closeButtonLabel = "Save";
-                config.contextButtonLabel = "Cancel";
+                config.backButtonLabel = "Cancel";
                 
                 config.open();
                 
                 return config;
             }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            [Bindable]
+            
+            /**
+             * @private
+             * the configuration to bind the components to
+             */
+            private var gritsConfiguration:GritsConfiguration;
             
             
             //--------------------------------------------------------------------------
@@ -73,23 +94,9 @@
              * @private
              * handler for the flash trace log changed
              */
-            private function onLogFlashTracesChanged():void {
-                trace("changed to: " + logTrace.selected);
-            }
-            
-            /**
-             * @private
-             * handler for the flash trace log changed
-             */
-            private function onOkClicked():void {
-                this.close();
-            }
-            
-            /**
-             * @private
-             * handler for the flash trace log changed
-             */
-            private function onCancelClicked():void {
+            private function onSaveClick():void {
+                gritsConfiguration.save();
+                
                 this.close();
             }
             
@@ -112,17 +119,33 @@
         ]]>
     </fx:Script>
     
+    <ifone:layout>
+        <s:VerticalLayout/>
+    </ifone:layout>
+    
     <ifone:IFoneSettingsPane width="100%" height="100%">
         <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Tabbed" iconImage="@Embed(source='/../assets/icons/tabs20.png')" width="100%">
-            <ifone:IFoneCheckBox selected="true"/>
+            <ifone:IFoneCheckBox id="tabView" selected="{gritsConfiguration.configurationFile.useTabbedView}" selectedChange="gritsConfiguration.configurationFile.useTabbedView = tabView.selected;"/>
         </ifone:IFoneSettingsNode>
         
         <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Save Logs" width="100%">
-            <ifone:IFoneCheckBox selected="false"/>
+            <ifone:IFoneCheckBox id="saveLogs" selected="{gritsConfiguration.configurationFile.saveLogs}" selectedChange="gritsConfiguration.configurationFile.saveLogs = saveLogs.selected;"/>
         </ifone:IFoneSettingsNode>
         
+        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Always on Top" width="100%">
+            <ifone:IFoneCheckBox id="alwaysOnTop" 
+                selected="{gritsConfiguration.configurationFile.windowMode == GritsWindowOptions.ALWAYS_ON_TOP}" 
+                selectedChange="gritsConfiguration.configurationFile.windowMode = alwaysOnTop.selected ? GritsWindowOptions.ALWAYS_ON_TOP : GritsWindowOptions.NORMAL;"/>
+        </ifone:IFoneSettingsNode>
+    </ifone:IFoneSettingsPane>
+    
+    <ifone:IFoneSettingsPane width="100%" height="100%">
         <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Flash Trace" width="100%">
-            <ifone:IFoneCheckBox id="logTrace" selected="false" selectedChange="onLogFlashTracesChanged();"/>
+            <ifone:IFoneCheckBox id="logTrace" selected="{gritsConfiguration.configurationFile.flashTraceEnabled}" selectedChange="gritsConfiguration.configurationFile.flashTraceEnabled = logTrace.selected;"/>
+        </ifone:IFoneSettingsNode>
+        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Flash Log File" width="100%" enabled="{logTrace.selected}">
+            <s:Label id="logFileLocation" color="#000000" text="[File]"/>
+            <ifone:IFoneButton label="..." width="{logTrace.width}"/>
         </ifone:IFoneSettingsNode>
     </ifone:IFoneSettingsPane>
     

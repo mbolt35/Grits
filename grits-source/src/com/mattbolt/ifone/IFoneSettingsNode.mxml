@@ -63,36 +63,11 @@
          * This property contains the name of the style to use with the label.
          -->
         <fx:String id="labelStyleName">settingsNodeLabel</fx:String>
-        
-        <!---
-         * This property contains the components to use within the node.
-         -->
-        <fx:Array id="components"/>
     </fx:Declarations>
     
     <fx:Script>
         <![CDATA[
-            //----------------------------------
-            //  imports
-            //----------------------------------
-            
-            import mx.core.IUIComponent;
-            import mx.core.IVisualElement;
-            
-            
-            //--------------------------------------------------------------------------
-            //
-            //  Variables
-            //
-            //--------------------------------------------------------------------------
-            
-            /**
-             * @private
-             * components to add upon creation complete
-             */
-            private var _componentsToAdd:Array = [];
 
-            
             //--------------------------------------------------------------------------
             //
             //  Event Handlers
@@ -104,15 +79,7 @@
              * handle creation complete
              */
             private function onCreationComplete():void {
-                /*
-                if (components) {
-                    for each (var element:IVisualElement in components) {
-                        componentContainer.addElement(element);
-                    }
-                }
-                */
-                
-                
+
             }
             
             

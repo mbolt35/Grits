@@ -3,8 +3,9 @@
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace ifone "com.mattbolt.ifone.*";
 
-ifone|IFoneWindowSkin {
-    backgroundImage: Embed(source='/../assets/skins/ifone-window/ifone-window-bg.png');
+global {
+    font-family: VerdanaEmbedded;
+    font-size: 11;
 }
 
 s|Application {

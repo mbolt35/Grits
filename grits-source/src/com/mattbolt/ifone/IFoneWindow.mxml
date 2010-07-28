@@ -33,29 +33,151 @@
     showStatusBar="false"
     systemChrome="none"
     skinClass="com.mattbolt.ifone.IFoneWindowSkin"
+    creationComplete="onCreationComplete();"
+    closing="onWindowClosing();"
     width="400" height="300">
     
+    <fx:Metadata>
+        //----------------------------------
+        //  events
+        //----------------------------------
+        
+        /**
+         * @eventType com.mattbolt.ifone.events.IFoneWindowEvent.BACK_CLICK
+         */
+        [Event(name="backClick", type="com.mattbolt.ifone.events.IFoneWindowEvent")]
+        
+        /**
+         * @eventType com.mattbolt.ifone.events.IFoneWindowEvent.CLOSE_CLICK
+         */
+        [Event(name="closeClick", type="com.mattbolt.ifone.events.IFoneWindowEvent")]
+        
+        
+        //----------------------------------
+        //  styles
+        //----------------------------------
+        
+        /**
+         * This style represents the background image used in the window
+         */
+        [Style(name="backgroundImage", type="Class", inherit="no")]
+    </fx:Metadata>
+    
+    
     <fx:Declarations>
+        <!---
+        * This string value is used to set the label on the "back" button.
+        -->
+        <fx:String id="backButtonLabel"/>
+        
         <!---
          * This string value is used to set the label on the close button.
          * 
          * @default Exit
          -->
         <fx:String id="closeButtonLabel">Exit</fx:String>
-        
-        <!---
-         * This string value is used to set the label on the context button.
-         -->
-        <fx:String id="contextButtonLabel"/>
     </fx:Declarations>
     
     <fx:Script>
         <![CDATA[
-            //----------------------------------
-            //  imports
-            //----------------------------------
+            import com.mattbolt.ifone.events.IFoneWindowEvent;
             
+            import mx.core.FlexGlobals;
             import mx.core.IVisualElement;
+            import mx.utils.ObjectUtil;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Static Initialization
+            //
+            //--------------------------------------------------------------------------
+            
+            [Embed(source="/../assets/skins/ifone-window/ifone-window-bg.png", mimeType="image/png")]
+            
+            /**
+             * @private
+             * the default background image class
+             */
+            private static var DefaultBackgroundImage:Class;
+            
+            /**
+             * @private
+             * static variable uses to initialize the style
+             */
+            private static var _classConstructed:Boolean = function():Boolean {
+                var styleManager:IStyleManager2 = FlexGlobals.topLevelApplication.styleManager;
+                
+                if (!styleManager.getStyleDeclaration("com.mattbolt.ifone.IFoneWindow")) {
+                    var newCss:CSSStyleDeclaration = new CSSStyleDeclaration();
+                    newCss.defaultFactory = function():void { 
+                        this.backgroundImage = DefaultBackgroundImage;
+                    };
+                        
+                    styleManager.setStyleDeclaration("com.mattbolt.ifone.IFoneWindow", newCss, true);
+                }
+                
+                return true;
+            }();
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * the iphone style title bar
+             */
+            private var _iTitleBar:IFoneTitleBar;
+
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Event Handlers
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * handle creation complete
+             */
+            private function onCreationComplete():void {
+                trace(ObjectUtil.toString(skinParts));
+            }
+            
+            /**
+             * @private
+             * handle the window close
+             */
+            private function onWindowClosing():void {
+                if (!_iTitleBar) {
+                    return;
+                }
+                
+                _iTitleBar.removeEventListener(IFoneWindowEvent.BACK_CLICK, dispatchEvent);
+                _iTitleBar.removeEventListener(IFoneWindowEvent.CLOSE_CLICK, dispatchEvent);
+            }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Override Methods
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @inheritDoc
+             */
+            public override function styleChanged(styleProp:String):void {
+                if (styleProp == "backgroundImage") {
+                    dispatchEvent(new Event("backgroundImageChanged"));
+                    return;
+                }
+                
+                super.styleChanged(styleProp);
+            }
             
             
             //--------------------------------------------------------------------------
@@ -64,6 +186,15 @@
             //
             //--------------------------------------------------------------------------
             
+            [Bindable("backgroundImageChanged")]
+            
+            /**
+             * This property contains the background image asset of the background.
+             */
+            public function get backgroundImage():Class {
+                return getStyle("backgroundImage");
+            }
+            
             [Bindable(event="nativeWindowChanged")]
             
             /**
@@ -71,6 +202,30 @@
              */
             public override function get nativeWindow():NativeWindow {
                 return super.nativeWindow;
+            }
+            
+            [SkinPart(required="true")] 
+            
+            /**
+             * This property contains the <code>IFoneTitleBar</code> used in this special
+             * window implementation.
+             */
+            public function get iTitleBar():IFoneTitleBar {
+                return _iTitleBar;
+            }  
+            
+            /**
+             * @private
+             */
+            public function set iTitleBar(value:IFoneTitleBar):void {
+                _iTitleBar = value;
+                
+                if (!_iTitleBar) {
+                    return;
+                } 
+                
+                _iTitleBar.addEventListener(IFoneWindowEvent.BACK_CLICK, dispatchEvent);
+                _iTitleBar.addEventListener(IFoneWindowEvent.CLOSE_CLICK, dispatchEvent);
             }
             
         ]]>

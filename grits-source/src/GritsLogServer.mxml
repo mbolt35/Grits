@@ -101,7 +101,7 @@
 
                 _grits.start();
                 
-                GritsSettingsWindow.show();
+                GritsSettingsWindow.show(_grits.config);
             }
             
             /**
@@ -136,8 +136,9 @@
         <ifone:IFoneTitleBar 
             left="0" top="0"
             width="100%"
-            nativeWindow="{nativeWindow}" 
-            rightButtonText="Exit"
+            nativeWindow="{nativeWindow}"
+            closeButtonText="Exit"
+            closeClick="onClose()"
             windowTitle="Grits"/>
         
         <ifone:IFoneButton width="150" label="Matt Rules" x="250" y="250"/>

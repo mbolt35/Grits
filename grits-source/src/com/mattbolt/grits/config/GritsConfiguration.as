@@ -109,6 +109,8 @@ package com.mattbolt.grits.config {
                 _configFile = new GritsConfigurationFile();
                 _configFile.saveLogs = true;
                 _configFile.useTabbedView = true;
+                _configFile.flashTraceEnabled = false;
+                _configFile.flashLogFileLocation = "";
                 _configFile.windowMode = GritsWindowOptions.NORMAL;
 
                 save();
