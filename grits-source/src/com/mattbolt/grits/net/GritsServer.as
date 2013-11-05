@@ -29,18 +29,18 @@ package com.mattbolt.grits.net {
     import com.mattbolt.grits.messaging.IGritsMessageParser;
     import com.mattbolt.grits.util.GarbageCollector;
     import com.mattbolt.grits.util.IGarbageCollectable;
-    import flash.events.IEventDispatcher;
-
-    import flash.events.EventDispatcher;
-    import flash.events.IOErrorEvent;
+    
     import flash.events.Event;
+    import flash.events.EventDispatcher;
+    import flash.events.IEventDispatcher;
+    import flash.events.IOErrorEvent;
     import flash.events.ServerSocketConnectEvent;
     import flash.net.ServerSocket;
     import flash.utils.Dictionary;
 
 
     //----------------------------------
-    //  imports
+    //  events
     //----------------------------------
 
     /**
@@ -240,11 +240,26 @@ package com.mattbolt.grits.net {
          * this handles a socket logging command
          */
         private function onSocketLog(event:GritsSocketEvent):void {
-            var delivery:GritsDeliveryDetails = _parser.parse(event.message);
-
-            trace("[" + delivery.tag + "][" + delivery.command + "][" + delivery.key + "]: " + delivery.logText);
-
-            dispatchEvent(new GritsTransportEvent(GritsTransportEvent.DELIVERY, delivery));
+            var gritsSocket:GritsSocket = GritsSocket(event.target);
+            var message:String = event.message;
+            
+            deliver(gritsSocket, message);
+        }
+        
+        /**
+         * @private
+         * parses and delivers the message
+         */ 
+        private function deliver(socket:GritsSocket, message:String):void {
+            var delivery:GritsDeliveryDetails = _parser.parse(message);
+            
+            //trace("[" + delivery.tag + "][" + delivery.command + "][" + delivery.key + "]: " + delivery.logText);
+            
+            dispatchEvent(new GritsTransportEvent(
+                GritsTransportEvent.DELIVERY, 
+                socket.socket.remoteAddress,
+                socket.socket.remotePort,
+                delivery));
         }
 
         /**

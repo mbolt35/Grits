@@ -28,6 +28,7 @@
 <s:SparkSkin 
     xmlns:fx="http://ns.adobe.com/mxml/2009" 
     xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/mx" 
     xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
     xmlns:ifone="com.mattbolt.ifone.*"
     alpha.disabledGroup="0.5" >
@@ -80,7 +81,7 @@
              */
             protected override function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
                 backBackgroundFill.color = getStyle("backgroundColor");
-                backBackgroundFill.alpha = backgroundFill.alpha = getStyle("backgroundAlpha");
+                backgroundFill.alpha = getStyle("backgroundAlpha");
                 
                 super.updateDisplayList(unscaledWidth, unscaledHeight);
             }
@@ -98,8 +99,6 @@
             public override function get colorizeExclusions():Array {
                 return exclusions;
             }
-            
-        
         ]]>
     </fx:Script>
     
@@ -138,7 +137,7 @@
      -->
     <s:Group left="0" right="0" top="0" bottom="0" minHeight="24" minWidth="0">
         <s:layout>
-            <s:VerticalLayout gap="0"/>
+            <s:VerticalLayout paddingLeft="0" paddingRight="0" paddingTop="0" paddingBottom="0" gap="0"/>
         </s:layout>
     
         <ifone:IFoneTitleBar id="iTitleBar"

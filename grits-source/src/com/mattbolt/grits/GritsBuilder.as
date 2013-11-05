@@ -24,9 +24,10 @@ package com.mattbolt.grits {
     //----------------------------------
 
     import com.mattbolt.grits.config.GritsConfiguration;
+    import com.mattbolt.grits.controller.IGritsViewController;
     import com.mattbolt.grits.messaging.IGritsMessageParserFactory;
     import com.mattbolt.grits.net.IGritsServerFactory;
-
+    
     import flash.display.DisplayObjectContainer;
 
 
@@ -76,9 +77,10 @@ package com.mattbolt.grits {
 
         /**
          * @private
-         * the parent container for the ui
+         * the view controller for ui display
          */
-        private var _container:DisplayObjectContainer;
+        private var _viewController:IGritsViewController;
+        
 
         //--------------------------------------------------------------------------
         //
@@ -124,8 +126,8 @@ package com.mattbolt.grits {
             return this;
         }
 
-        public function usingContainer(container:DisplayObjectContainer):GritsBuilder {
-            _container = container;
+        public function controlDisplayWith(viewController:IGritsViewController):GritsBuilder {
+            _viewController = viewController;
 
             return this;
         }
@@ -134,7 +136,7 @@ package com.mattbolt.grits {
             return new Grits(
                 _server.gritsServer(_address, _port, _parser.parser()),
                 _gritsConfiguration,
-                _container);
+                _viewController);
         }
 
         //--------------------------------------------------------------------------

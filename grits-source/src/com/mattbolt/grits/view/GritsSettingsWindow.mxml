@@ -46,6 +46,7 @@
         <![CDATA[
             import com.mattbolt.grits.config.GritsConfiguration;
             import com.mattbolt.grits.enum.GritsWindowOptions;
+            import com.mattbolt.ifone.IFoneTitleBar;
             
             //--------------------------------------------------------------------------
             //
@@ -64,7 +65,8 @@
                 config.backButtonLabel = "Cancel";
                 
                 config.open();
-                
+                trace(config);
+                                
                 return config;
             }
             
@@ -106,15 +108,6 @@
             //  Properties
             //
             //--------------------------------------------------------------------------
-            
-            [Bindable("nativeWindowChanged")]
-            
-            /**
-             * @inheritDoc
-             */
-            public override function get nativeWindow():NativeWindow {
-                return super.nativeWindow;
-            }
  
         ]]>
     </fx:Script>
@@ -124,15 +117,15 @@
     </ifone:layout>
     
     <ifone:IFoneSettingsPane width="100%" height="100%">
-        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Tabbed" iconImage="@Embed(source='/../assets/icons/tabs20.png')" width="100%">
+        <ifone:IFoneSettingsNode label="Tabbed" iconImage="@Embed(source='/../assets/icons/tabs20.png')" width="100%">
             <ifone:IFoneCheckBox id="tabView" selected="{gritsConfiguration.configurationFile.useTabbedView}" selectedChange="gritsConfiguration.configurationFile.useTabbedView = tabView.selected;"/>
         </ifone:IFoneSettingsNode>
         
-        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Save Logs" width="100%">
+        <ifone:IFoneSettingsNode label="Save Logs" width="100%">
             <ifone:IFoneCheckBox id="saveLogs" selected="{gritsConfiguration.configurationFile.saveLogs}" selectedChange="gritsConfiguration.configurationFile.saveLogs = saveLogs.selected;"/>
         </ifone:IFoneSettingsNode>
         
-        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Always on Top" width="100%">
+        <ifone:IFoneSettingsNode label="Always on Top" width="100%">
             <ifone:IFoneCheckBox id="alwaysOnTop" 
                 selected="{gritsConfiguration.configurationFile.windowMode == GritsWindowOptions.ALWAYS_ON_TOP}" 
                 selectedChange="gritsConfiguration.configurationFile.windowMode = alwaysOnTop.selected ? GritsWindowOptions.ALWAYS_ON_TOP : GritsWindowOptions.NORMAL;"/>
@@ -140,12 +133,12 @@
     </ifone:IFoneSettingsPane>
     
     <ifone:IFoneSettingsPane width="100%" height="100%">
-        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Flash Trace" width="100%">
+        <ifone:IFoneSettingsNode label="Flash Trace" width="100%">
             <ifone:IFoneCheckBox id="logTrace" selected="{gritsConfiguration.configurationFile.flashTraceEnabled}" selectedChange="gritsConfiguration.configurationFile.flashTraceEnabled = logTrace.selected;"/>
         </ifone:IFoneSettingsNode>
-        <ifone:IFoneSettingsNode labelStyleName="iFoneCB" label="Flash Log File" width="100%" enabled="{logTrace.selected}">
+        <ifone:IFoneSettingsNode label="Flash Log File" width="100%" enabled="{logTrace.selected}">
             <s:Label id="logFileLocation" color="#000000" text="[File]"/>
-            <ifone:IFoneButton label="..." width="{logTrace.width}"/>
+            <s:Button label="..." width="{logTrace.width}"/>
         </ifone:IFoneSettingsNode>
     </ifone:IFoneSettingsPane>
     

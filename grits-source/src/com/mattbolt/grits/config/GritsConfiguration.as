@@ -25,9 +25,10 @@ package com.mattbolt.grits.config {
 
     import com.mattbolt.grits.enum.GritsWindowOptions;
     import com.mattbolt.grits.events.GritsConfigurationEvent;
-
-    import flash.events.EventDispatcher;
+    
     import flash.data.EncryptedLocalStore;
+    import flash.events.EventDispatcher;
+    import flash.events.IEventDispatcher;
     import flash.net.registerClassAlias;
     import flash.utils.ByteArray;
 
@@ -46,7 +47,7 @@ package com.mattbolt.grits.config {
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
-    public class GritsConfiguration extends EventDispatcher {
+    public class GritsConfiguration extends EventDispatcher implements IEventDispatcher {
 
         //--------------------------------------------------------------------------
         //
@@ -85,6 +86,7 @@ package com.mattbolt.grits.config {
          */
         public function GritsConfiguration() {
             registerClassAlias("GritsConfigurationFile", GritsConfigurationFile);
+            registerClassAlias("GritsColorConfiguration", GritsColorConfiguration);
         }
 
 
@@ -107,6 +109,8 @@ package com.mattbolt.grits.config {
 
             if (!bytes || bytes.length <= 0) {
                 _configFile = new GritsConfigurationFile();
+                _configFile.xPosition = 10;
+                _configFile.yPosition = 10;
                 _configFile.saveLogs = true;
                 _configFile.useTabbedView = true;
                 _configFile.flashTraceEnabled = false;

@@ -63,6 +63,7 @@
             //----------------------------------
             
             import flash.display.NativeWindow;
+            import com.mattbolt.ifone.events.IFoneWindowEvent;
             
             
             //--------------------------------------------------------------------------
@@ -145,12 +146,12 @@
             
         ]]>
     </fx:Script>
-    
+
     <s:states>
-        <s:State name="none"/>
-        <s:State name="leftOnly"/>
-        <s:State name="rightOnly"/>
-        <s:State name="both"/>
+        <mx:State name="none"/>
+        <mx:State name="leftOnly"/>
+        <mx:State name="rightOnly"/>
+        <mx:State name="both"/>
     </s:states>
     
     <s:BorderContainer id="titleContainer"
@@ -166,22 +167,17 @@
                 paddingLeft="5" paddingRight="5" 
                 gap="1"/>
         </s:layout>
-        <fx:Script>
-            <![CDATA[
-                import com.mattbolt.ifone.events.IFoneWindowEvent;
-            ]]>
-        </fx:Script>
-        <ifone:IFoneButton
-            includeIn="leftOnly,both"
-            fontSize="11"
-            label="{backButtonText}"
-            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.BACK_CLICK));"/>
+        <s:Button 
+            includeIn="leftOnly,both" 
+            label="{backButtonText}" 
+            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.BACK_CLICK));"
+            mouseDown="event.stopImmediatePropagation();"/>
         <mx:Spacer width="100%"/>
-        <ifone:IFoneButton
+        <s:Button 
             includeIn="rightOnly,both"
-            fontSize="11"
             label="{closeButtonText}"
-            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.CLOSE_CLICK));"/>
+            click="dispatchEvent(new IFoneWindowEvent(IFoneWindowEvent.CLOSE_CLICK));"
+            mouseDown="event.stopImmediatePropagation();"/>
     </s:BorderContainer>
     
     <s:Label 
@@ -191,10 +187,10 @@
         fontWeight="bold" color="#FFFFFF" 
         mouseEnabled="false"
         text="{windowTitle}">
-        
+
         <s:filters>
             <fx:Array>
-                <mx:DropShadowFilter color="#282828" blurX="0" blurY="1" distance="1" quality="3" inner="false" angle="90" />
+                <s:DropShadowFilter color="#282828" blurX="0" blurY="1" distance="1" quality="3" inner="false" angle="90" />
             </fx:Array>
         </s:filters>
     </s:Label>

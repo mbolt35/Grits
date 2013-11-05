@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+<s:WindowedApplication
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"
+    xmlns:grits="com.mattbolt.grits.view.*"
+    xmlns:ifone="com.mattbolt.ifone.*"
+    creationPolicy="all"
+    width="800" height="300"
+    frameRate="60"
+    backgroundFrameRate="20"
+    showStatusBar="false"
+    backgroundAlpha="0"
+    creationComplete="init();"
+    visible="false">
+    
+    <fx:Style source="GritsStyles.css"/>
+    <fx:Style source="IFoneStyles.css"/>
+
+    <fx:Declarations>
+        
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            //----------------------------------
+            //  imports
+            //----------------------------------
+            
+            import com.mattbolt.grits.Grits;
+            import com.mattbolt.grits.GritsBuilder;
+            import com.mattbolt.grits.config.GritsConfiguration;
+            import com.mattbolt.grits.messaging.defaultMessageParser;
+            import com.mattbolt.grits.net.defaultGritsServer;
+            import com.mattbolt.grits.view.GritsSettingsWindow;
+            import flash.display.NativeWindow;
+            import flash.text.TextFormat;
+            
+            import mx.containers.TabNavigator;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * server socket connection
+             */
+            private var _grits:Grits;
+            
+            /**
+             * @private
+             * main window
+             */
+            private var _mainWindow:GritsMainWindow;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods: Initializer
+            //
+            //--------------------------------------------------------------------------
+
+            /**
+             * @private
+             * handle initialize
+             */
+            private function init():void {
+                initializeGrits();
+                
+                initializeBaseWindow();
+                initializeLastSettings();
+                
+                GritsSettingsWindow.show(_grits.config);
+            }
+            
+            private function initializeBaseWindow():void {
+                _mainWindow.addEventListener(Event.CLOSE, onClose);
+                _mainWindow.addEventListener(Event.CLOSING, onClosing); 
+            }
+            
+            /**
+             * @private
+             * this method initializes the configuration settings from last load
+             */
+            private function initializeLastSettings():void {
+                var xPos:Number = _grits.config.configurationFile.xPosition;
+                var yPos:Number = _grits.config.configurationFile.yPosition;
+                
+                _mainWindow.move(isNaN(xPos) ? 10 : xPos, isNaN(yPos) ? 10 : yPos);
+            }
+            
+            /**
+             * @private
+             * this method initializes grits using a grits builder
+             */
+            private function initializeGrits():void {
+                _mainWindow = new GritsMainWindow();
+                
+                _grits = new GritsBuilder()
+                    .withServer(defaultGritsServer())
+                    .boundTo("localhost", 4444)
+                    .parsingMessagesWith(defaultMessageParser())
+                    .configuredWith(new GritsConfiguration())
+                    .controlDisplayWith(_mainWindow)
+                    .build();
+                
+                _grits.start();
+            }
+            
+            /**
+             * @private
+             * handler for the main window closing
+             */
+            private function onClosing(event:Event):void {
+                _mainWindow.removeEventListener(Event.CLOSING, onClosing);
+                
+                _grits.config.configurationFile.xPosition = _mainWindow.nativeWindow.x;
+                _grits.config.configurationFile.yPosition = _mainWindow.nativeWindow.y;
+                
+                _grits.config.save();
+            }
+            
+            /**
+             * @private
+             * handler for the main window close
+             */
+            private function onClose(event:Event):void {    
+                _mainWindow.removeEventListener(Event.CLOSE, onClose);
+                
+                nativeApplication.exit(0);
+            }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
+
+            
+        ]]>
+    </fx:Script>
+    
+    <s:layout>
+        <s:VerticalLayout 
+            horizontalAlign="left" verticalAlign="top" 
+            paddingBottom="0" paddingTop="0" 
+            paddingRight="0" paddingLeft="0"/>
+    </s:layout>
+
+</s:WindowedApplication>

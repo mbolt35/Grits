@@ -1,0 +1,26 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace render "com.mattbolt.grits.render.*";
+
+mx|TextArea {
+    font-family: EnvyEmbedded;
+    font-weight: normal;
+    font-size: 12;
+}
+
+@font-face {
+    src: url('/../assets/fonts/EnvyCodeR.ttf');
+    font-family: EnvyEmbedded;
+    font-anti-alias-type: advanced;
+    font-weight: normal;
+    embed-as-cff: true;
+}
+
+@font-face {
+    src: url('/../assets/fonts/EnvyCodeR-Bold.ttf');
+    font-family: EnvyEmbedded;
+    font-anti-alias-type: advanced;
+    font-weight: bold;
+    embed-as-cff: true;
+}

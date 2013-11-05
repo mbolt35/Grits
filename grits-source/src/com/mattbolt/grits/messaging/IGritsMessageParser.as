@@ -40,6 +40,17 @@ package com.mattbolt.grits.messaging {
         //--------------------------------------------------------------------------
 
         /**
+         * This method determines whether or not the <code>message</code> parameter contains
+         * enough data to parse successfully. This can be used to string multiple socket 
+         * messages together to form a single delivery.
+         * 
+         * @param   message The raw <code>String</code> message coming from the client.
+         * 
+         * @return A <code>Boolean</code> value set to <code>true</code> if the message is complete.
+         */
+        function isCompleteMessage(message:String):Boolean;
+        
+        /**
          * This method parses the raw <code>String</code> message sent to the server,
          * converts it into <code>GritsDeliveryDetails</code> ready for display in the
          * ui.

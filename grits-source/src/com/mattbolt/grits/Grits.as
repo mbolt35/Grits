@@ -24,10 +24,14 @@ package com.mattbolt.grits {
     //----------------------------------
 
     import com.mattbolt.grits.config.GritsConfiguration;
+    import com.mattbolt.grits.controller.IGritsViewController;
     import com.mattbolt.grits.events.GritsServerEvent;
+    import com.mattbolt.grits.events.GritsTransportEvent;
     import com.mattbolt.grits.net.IGritsServer;
-
+    
     import flash.display.DisplayObjectContainer;
+    import flash.events.EventDispatcher;
+    import flash.events.IEventDispatcher;
 
 
     /**
@@ -35,7 +39,7 @@ package com.mattbolt.grits {
      *
      * @author Matt Bolt [mbolt35&#64;gmail.com]
      */
-    public class Grits {
+    public class Grits extends EventDispatcher implements IEventDispatcher {
 
         //--------------------------------------------------------------------------
         //
@@ -57,9 +61,9 @@ package com.mattbolt.grits {
 
         /**
          * @private
-         * the parent ui container
+         * the ui view controller
          */
-        private var _uiContainer:DisplayObjectContainer;
+        private var _viewController:IGritsViewController;
 
 
         //--------------------------------------------------------------------------
@@ -73,13 +77,16 @@ package com.mattbolt.grits {
          */
         public function Grits( server:IGritsServer,
                                config:GritsConfiguration,
-                               uiContainer:DisplayObjectContainer )
+                               viewController:IGritsViewController )
         {
             _server = server;
             _gritsConfiguration = config;
-            _uiContainer = uiContainer;
+            _viewController = viewController;
 
             _gritsConfiguration.load();
+            _viewController.init(this);
+            
+            _server.addEventListener(GritsTransportEvent.DELIVERY, onDelivery);
         }
 
 
@@ -105,13 +112,30 @@ package com.mattbolt.grits {
             _server.stop();
         }
 
-
+        /**
+         * @private
+         * this message handles the log delivery transport
+         */
+        private function onDelivery(event:GritsTransportEvent):void {
+            _viewController.pushLog(sessionIdFor(event), event.delivery);
+        }
+        
+        /**
+         * @private
+         * this message returns the session id for a delivery.
+         */
+        private function sessionIdFor(event:GritsTransportEvent):String {
+            return event.remoteAddress + ":" + event.remotePort.toString();
+        }
+        
         //--------------------------------------------------------------------------
         //
         //  Properties
         //
         //--------------------------------------------------------------------------
 
+        [Bindable(event=GritsConfigurationEvent.CONFIGURATION_CHANGED)]
+        
         /**
          * This property contains the grits application configuration.
          */

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ButtonBarButton 
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/mx">
+    
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+    
+    <fx:Metadata>
+        //----------------------------------
+        //  styles
+        //----------------------------------
+        
+        /**
+         * This style represents the background image used in the window
+         */
+        [Style(name="icon", type="Class", inherit="no")]
+    </fx:Metadata>
+    
+    <fx:Script>
+        <![CDATA[
+            import mx.core.FlexGlobals;
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Static Initialization
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * static variable uses to initialize the style
+             */
+            private static var _classConstructed:Boolean = function():Boolean {
+                var styleManager:IStyleManager2 = FlexGlobals.topLevelApplication.styleManager;
+                
+                if (!styleManager.getStyleDeclaration("com.mattbolt.ifone.IFoneBottomTabBarButton")) {
+                    var newCss:CSSStyleDeclaration = new CSSStyleDeclaration();
+                    newCss.defaultFactory = function():void { 
+                        this.icon = null;
+                    };
+                    
+                    styleManager.setStyleDeclaration("com.mattbolt.ifone.IFoneBottomTabBarButton", newCss, true);
+                }
+                
+                return true;
+            }();
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @inheritDoc
+             */
+            public override function styleChanged(styleProp:String):void {
+                if (styleProp == "icon") {
+                    dispatchEvent(new Event("iconImageChanged"));
+                } 
+                
+                super.styleChanged(styleProp);
+            }
+                
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
+            
+            [Bindable("iconImageChanged")]
+            
+            /**
+             * This property contains the background image asset of the background.
+             */
+            public function get iconImage():Class {
+                return getStyle("icon");
+            }
+            
+        ]]>
+    </fx:Script>
+    
+</s:ButtonBarButton>

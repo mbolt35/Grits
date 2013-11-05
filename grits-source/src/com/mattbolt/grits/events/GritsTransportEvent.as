@@ -20,7 +20,7 @@
 package com.mattbolt.grits.events {
 
     import com.mattbolt.grits.net.GritsDeliveryDetails;
-
+    
     import flash.events.Event;
 
 
@@ -54,6 +54,18 @@ package com.mattbolt.grits.events {
          * the parsed delivery details from the socket
          */
         private var _delivery:GritsDeliveryDetails;
+        
+        /**
+         * @private
+         * local address of the socket
+         */
+        private var _remoteAddress:String;
+        
+        /**
+         * @private
+         * local port of the socket
+         */
+        private var _remotePort:int;
 
 
         //--------------------------------------------------------------------------
@@ -72,9 +84,11 @@ package com.mattbolt.grits.events {
          * @param cancelable Specifies whether the behavior associated with
          * the event can be prevented.
          */
-        public function GritsTransportEvent(type:String, delivery:GritsDeliveryDetails) {
+        public function GritsTransportEvent(type:String, remoteAddress:String, remotePort:int, delivery:GritsDeliveryDetails) {
             super(type, false, false);
 
+            _remoteAddress = remoteAddress;
+            _remotePort = remotePort;
             _delivery = delivery;
         }
 
@@ -88,14 +102,14 @@ package com.mattbolt.grits.events {
          * @inheritDoc
          */
         public override function clone():Event {
-            return new GritsTransportEvent(type, _delivery);
+            return new GritsTransportEvent(type, _remoteAddress, _remotePort, _delivery);
         }
 
         /**
          * @inheritDoc
          */
         public override function toString():String {
-            return formatToString("GritsTransportEvent", "type", "delivery", "bubbles", "cancelable", "eventPhase");
+            return formatToString("GritsTransportEvent", "type", "remoteAddress", "remotePort", "delivery", "bubbles", "cancelable", "eventPhase");
         }
 
 
@@ -111,6 +125,20 @@ package com.mattbolt.grits.events {
          */
         public function get delivery():GritsDeliveryDetails {
             return _delivery;
+        }
+        
+        /**
+         * This property contains the remote address of the socket connection
+         */
+        public function get remoteAddress():String {
+            return _remoteAddress;
+        }
+        
+        /**
+         * This property contains the remote port of the socket connection.
+         */
+        public function get remotePort():int {
+            return _remotePort;
         }
 
     }

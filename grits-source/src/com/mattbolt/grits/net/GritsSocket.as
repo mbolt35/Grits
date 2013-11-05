@@ -25,13 +25,15 @@ package com.mattbolt.grits.net {
 
     import com.mattbolt.grits.events.GritsSocketEvent;
     import com.mattbolt.grits.util.IGarbageCollectable;
-
-    import flash.events.EventDispatcher;
+    
     import flash.events.Event;
+    import flash.events.EventDispatcher;
     import flash.events.IOErrorEvent;
     import flash.events.ProgressEvent;
     import flash.events.SecurityErrorEvent;
     import flash.net.Socket;
+    import flash.net.XMLSocket;
+    import flash.utils.ByteArray;
 
 
     /**
@@ -68,6 +70,18 @@ package com.mattbolt.grits.net {
          * the socket being managed by this instance
          */
         private var _socket:Socket;
+        
+        /**
+         * @private
+         * the buffer to read data into
+         */
+        private var _buffer:ByteArray = new ByteArray();
+        
+        /**
+         * @private
+         * buffer position pointer
+         */
+        private var _position:int = 0;
 
         /**
          * @private
@@ -147,8 +161,26 @@ package com.mattbolt.grits.net {
          * this method handles socket data events
          */
         private function onSocketData(event:ProgressEvent):void {
-            var msg:String = _socket.readUTFBytes(_socket.bytesAvailable);
-
+            while (_socket.bytesAvailable > 0) {
+                var byte:int = _socket.readByte();
+                _buffer.writeByte(byte);
+                
+                if (byte == 0) {
+                    _buffer.position = 0;
+                    
+                    packageAndSendBuffer();
+                }
+            }
+        }
+        
+        /**
+         * @private
+         * pulls the message out of the buffer and sends notification
+         */
+        private function packageAndSendBuffer():void {            
+            var msg:String = _buffer.readUTFBytes(_buffer.length);
+            _buffer.clear();
+            
             dispatchEvent(new GritsSocketEvent(GritsSocketEvent.SOCKET_LOG, msg));
         }
 
@@ -157,7 +189,7 @@ package com.mattbolt.grits.net {
          * security error handler
          */
         private function onSecurityError(event:SecurityErrorEvent):void {
-
+            trace("SECURITY ERROR: " + event.text);
         }
 
         /**
@@ -165,7 +197,7 @@ package com.mattbolt.grits.net {
          * io error handler
          */
         private function onIOErrorEvent(event:IOErrorEvent):void {
-
+            trace("IO ERROR: " + event.text);
         }
 
         /**
@@ -173,7 +205,7 @@ package com.mattbolt.grits.net {
          * socket connect handler
          */
         private function onSocketConnect(event:Event):void {
-
+            trace("SOCKET CONNECT");
         }
 
         /**

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<!---
+* This class is used to skin an <code>IFoneTabBarButton</code> instance.
+* 
+* @author Matt Bolt [mbolt35&#64;gmail.com]
+-->
+<s:SparkSkin 
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"
+    minWidth="21" minHeight="21" 
+    alpha.disabledStates="0.5">
+    
+    <!-- host component -->
+    <fx:Metadata>
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.ButtonBarButton")]
+    </fx:Metadata>
+    
+    <fx:Script>
+        <![CDATA[
+            import spark.filters.*;
+            import flash.filters.BitmapFilterQuality;
+            import flash.filters.BitmapFilterType;
+            import spark.components.TabBar;
+            
+            /** 
+             * @private
+             */
+            private static const exclusions:Array = [ "labelDisplay" ];
+      
+            /** 
+             * @private
+             */     
+            public override function get colorizeExclusions():Array {
+                return exclusions;
+            }
+            
+            /**
+             * @private
+             */
+            protected override function initializationComplete():void {
+                useChromeColor = true;
+                super.initializationComplete();
+            }
+            
+            /**
+             * @private
+             */
+            protected override function updateDisplayList(unscaledWidth:Number, unscaleHeight:Number):void {
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+            }
+            
+            /**
+             * @inheritDoc
+             */
+            public override function set currentState(value:String):void {
+                if (!hostComponent) {
+                    super.currentState = value;
+                    return;
+                }
+
+                if (hostComponent.itemIndex == 0) {
+                    super.currentState = "left" + value.substring(0, 1).toUpperCase() + value.substring(1); 
+                } else if (hostComponent.itemIndex == hostComponent.parent.numChildren - 1) {
+                    value = value.substring(0, 1).toUpperCase() + value.substring(1);
+                    super.currentState = "right" + value.substring(0, 1).toUpperCase() + value.substring(1); 
+                } else {
+                    super.currentState = value;
+                }
+            } 
+
+        ]]>
+    </fx:Script>
+    
+    <!-- states -->
+    <s:states>
+        <!-- Normal -->
+        <s:State name="up" stateGroups="deselectedUpStates" />
+        <s:State name="over" stateGroups="overStates, deselectedOverStates" />
+        <s:State name="down" stateGroups="downStates, deselectedDownStates" />
+        <s:State name="disabled" stateGroups="disabledStates" />
+        <s:State name="upAndSelected" stateGroups="selectedStates, selectedUpStates" />
+        <s:State name="overAndSelected" stateGroups="overStates, selectedStates, selectedOverStates" />
+        <s:State name="downAndSelected" stateGroups="downStates, selectedStates, selectedDownStates" />
+        <s:State name="disabledAndSelected" stateGroups="selectedUpStates, disabledStates, selectedStates" />
+        
+        <!-- Left -->
+        <s:State name="leftUp" stateGroups="deselectedUpStates" />
+        <s:State name="leftOver" stateGroups="overStates, deselectedOverStates" />
+        <s:State name="leftDown" stateGroups="downStates, deselectedDownStates" />
+        <s:State name="leftDisabled" stateGroups="disabledStates" />
+        <s:State name="leftUpAndSelected" stateGroups="selectedStates, selectedUpStates" />
+        <s:State name="leftOverAndSelected" stateGroups="overStates, selectedStates, selectedOverStates" />
+        <s:State name="leftDownAndSelected" stateGroups="downStates, selectedStates, selectedDownStates" />
+        <s:State name="leftDisabledAndSelected" stateGroups="selectedUpStates, disabledStates, selectedStates" />
+        
+        <!-- Right -->
+        <s:State name="rightUp" stateGroups="deselectedUpStates" />
+        <s:State name="rightOver" stateGroups="overStates, deselectedOverStates" />
+        <s:State name="rightDown" stateGroups="downStates, deselectedDownStates" />
+        <s:State name="rightDisabled" stateGroups="disabledStates" />
+        <s:State name="rightUpAndSelected" stateGroups="selectedStates, selectedUpStates" />
+        <s:State name="rightOverAndSelected" stateGroups="overStates, selectedStates, selectedOverStates" />
+        <s:State name="rightDownAndSelected" stateGroups="downStates, selectedStates, selectedDownStates" />
+        <s:State name="rightDisabledAndSelected" stateGroups="selectedUpStates, disabledStates, selectedStates" />
+    </s:states>
+    
+    <!-- Button -->
+    <s:VGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0" verticalAlign="top" horizontalAlign="left" mouseChildren="false">
+        <s:HGroup width="100%" height="4" maxHeight="4" minHeight="4"  paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image 
+                autoLoad="true" scaleContent="false" maintainAspectRatio="true"
+                source.up="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb1.png')"
+                source.down="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb1.png')"
+                source.over="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb1.png')"
+                source.upAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb1.png')"
+                source.downAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb1.png')"
+                source.overAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb1.png')"
+                source.leftUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/up/c1.png')"
+                source.leftDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/down/c1.png')"
+                source.leftOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/over/c1.png')"
+                source.leftUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/up/c1.png')"
+                source.leftDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/down/c1.png')"
+                source.leftOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/over/c1.png')"
+                source.rightUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb1.png')"
+                source.rightDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb1.png')"
+                source.rightOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb1.png')"
+                source.rightUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb1.png')"
+                source.rightDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb1.png')"
+                source.rightOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb1.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="4" maxHeight="4" minHeight="4" width="100%"
+                source.deselectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb2.png')"
+                source.deselectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb2.png')"
+                source.deselectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb2.png')"
+                source.selectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb2.png')"
+                source.selectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb2.png')"
+                source.selectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb2.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="false" maintainAspectRatio="true" 
+                source.up="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb3.png')"
+                source.down="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb3.png')"
+                source.over="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb3.png')"
+                source.upAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb3.png')"
+                source.downAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb3.png')"
+                source.overAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb3.png')"
+                source.leftUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb3.png')"
+                source.leftDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb3.png')"
+                source.leftOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb3.png')"
+                source.leftUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb3.png')"
+                source.leftDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb3.png')"
+                source.leftOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb3.png')"
+                source.rightUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/up/c3.png')"
+                source.rightDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/down/c3.png')"
+                source.rightOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/over/c3.png')"
+                source.rightUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/up/c3.png')"
+                source.rightDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/down/c3.png')"
+                source.rightOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/over/c3.png')"/>
+        </s:HGroup>
+        
+        <s:HGroup width="100%" height="100%" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"
+                source.deselectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb4.png')"
+                source.deselectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb4.png')"
+                source.deselectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb4.png')"
+                source.selectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb4.png')"
+                source.selectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb4.png')"
+                source.selectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb4.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="100%" height="100%"
+                source.deselectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb5.png')"
+                source.deselectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb5.png')"
+                source.deselectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb5.png')"
+                source.selectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb5.png')"
+                source.selectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb5.png')"
+                source.selectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb5.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="true" maintainAspectRatio="false" width="5" maxWidth="5" minWidth="5" height="100%"
+                source.deselectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb6.png')"
+                source.deselectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb6.png')"
+                source.deselectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb6.png')"
+                source.selectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb6.png')"
+                source.selectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb6.png')"
+                source.selectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb6.png')"/>
+        </s:HGroup>
+        
+        <s:HGroup width="100%" height="5" maxHeight="5" minHeight="5" paddingBottom="0" paddingRight="0" paddingLeft="0" paddingTop="0" gap="0">
+            <mx:Image autoLoad="true" scaleContent="false" maintainAspectRatio="true"
+                source.up="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb7.png')"
+                source.down="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb7.png')"
+                source.over="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb7.png')"
+                source.upAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb7.png')"
+                source.downAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb7.png')"
+                source.overAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb7.png')"
+                source.leftUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/up/c2.png')"
+                source.leftDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/down/c2.png')"
+                source.leftOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/over/c2.png')"
+                source.leftUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/up/c2.png')"
+                source.leftDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/down/c2.png')"
+                source.leftOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/over/c2.png')"
+                source.rightUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb7.png')"
+                source.rightDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb7.png')"
+                source.rightOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb7.png')"
+                source.rightUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb7.png')"
+                source.rightDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb7.png')"
+                source.rightOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb7.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="true" maintainAspectRatio="false" height="5" maxHeight="5" minHeight="5" width="100%"
+                source.deselectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb8.png')"
+                source.deselectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb8.png')"
+                source.deselectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb8.png')"
+                source.selectedUpStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb8.png')"
+                source.selectedDownStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb8.png')"
+                source.selectedOverStates="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb8.png')"/>
+            
+            <mx:Image autoLoad="true" scaleContent="false" maintainAspectRatio="true" 
+                source.up="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb9.png')"
+                source.down="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb9.png')"
+                source.over="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb9.png')"
+                source.upAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb9.png')"
+                source.downAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb9.png')"
+                source.overAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb9.png')"
+                source.leftUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/up/bb9.png')"
+                source.leftDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/down/bb9.png')"
+                source.leftOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/deselected/over/bb9.png')"
+                source.leftUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/up/bb9.png')"
+                source.leftDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/down/bb9.png')"
+                source.leftOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/frame/selected/over/bb9.png')"
+                source.rightUp="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/up/c4.png')"
+                source.rightDown="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/down/c4.png')"
+                source.rightOver="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/deselected/over/c4.png')"
+                source.rightUpAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/up/c4.png')"
+                source.rightDownAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/down/c4.png')"
+                source.rightOverAndSelected="@Embed(source='/../assets/skins/ifone-tab-bar-button/corners/selected/over/c4.png')"/>
+        </s:HGroup>
+    </s:VGroup>
+    
+    <!--- 
+     * @copy spark.components.supportClasses.ButtonBase#labelDisplay 
+     -->
+    <s:Label id="labelDisplay"
+        textAlign="center"
+        verticalAlign="middle"
+        maxDisplayedLines="1"
+        horizontalCenter="0" verticalCenter="1"
+        left="10" right="10" top="2" bottom="2">
+    </s:Label>
+    
+</s:SparkSkin>

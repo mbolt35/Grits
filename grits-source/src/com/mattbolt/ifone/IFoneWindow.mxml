@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -32,7 +31,7 @@
     xmlns:ifone="com.mattbolt.ifone.*"
     showStatusBar="false"
     systemChrome="none"
-    skinClass="com.mattbolt.ifone.IFoneWindowSkin"
+    creationPolicy="all"
     creationComplete="onCreationComplete();"
     closing="onWindowClosing();"
     width="400" height="300">
@@ -84,7 +83,6 @@
             
             import mx.core.FlexGlobals;
             import mx.core.IVisualElement;
-            import mx.utils.ObjectUtil;
             
             
             //--------------------------------------------------------------------------
@@ -144,7 +142,7 @@
              * handle creation complete
              */
             private function onCreationComplete():void {
-                trace(ObjectUtil.toString(skinParts));
+                
             }
             
             /**
@@ -212,7 +210,7 @@
              */
             public function get iTitleBar():IFoneTitleBar {
                 return _iTitleBar;
-            }  
+            }
             
             /**
              * @private

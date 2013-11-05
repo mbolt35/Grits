@@ -30,7 +30,6 @@
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx" 
     xmlns:ifone="com.mattbolt.ifone.*"
-    skinClass="com.mattbolt.ifone.IFoneSettingsNodeSkin"
     creationComplete="onCreationComplete();"
     width="300" height="43">
     

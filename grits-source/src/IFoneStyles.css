@@ -1,0 +1,135 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace ifone "com.mattbolt.ifone.*";
+
+@font-face {
+    src: url('/../assets/fonts/verdana.TTF');
+    font-family: VerdanaEmbedded;
+    font-anti-alias-type: advanced;
+    font-weight: normal;
+    embed-as-cff: true;
+    tracking-right: -0.5;
+}
+
+@font-face {
+    src: url('/../assets/fonts/Verdana_Bold.TTF');
+    font-family: VerdanaEmbedded;
+    font-anti-alias-type: advanced;
+    font-weight: bold;
+    embedAsCFF: true;
+    tracking-right: -0.5;
+}
+
+global {
+    font-family: VerdanaEmbedded;
+    font-size: 11;
+    font-lookup: embeddedCFF;
+    tracking-right: -0.45;
+}
+
+s|Application {
+    font-family: VerdanaEmbedded;
+}
+
+s|VerticalLayout {
+    padding-bottom: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-left: 0;
+}
+
+s|WindowedApplication {
+    background-color: #505153;
+    font-family: VerdanaEmbedded;
+    drop-shadow-enabled: true;
+    drop-shadow-color: #505153;
+    drop-shadow-distance: 5;
+}
+
+s|Button {
+    skin-class: ClassReference("com.mattbolt.ifone.IFoneButtonSkin");
+    font-size: 11;
+}
+
+s|TabBar {
+    skin-class: ClassReference("com.mattbolt.ifone.IFoneTabBarSkin");
+}
+
+s|Window {
+    background-color: #505153;
+}
+
+s|BorderContainer {
+    background-color: #505153;
+    border-color: #232323;
+    border-weight: 2;
+}
+
+s|Button {
+    font-family: VerdanaEmbedded;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 11;
+    tracking-right: -0.45;
+    accent-color: #505153;
+    chrome-color: #959595;
+}
+
+s|Label {
+    font-family: VerdanaEmbedded;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 11;
+    tracking-right: -0.25;
+}
+
+/*
+mx|TabNavigator {
+    background-color: #505153;
+}
+*/
+
+
+ifone|IFoneSettingsNode {
+    skin-class: ClassReference("com.mattbolt.ifone.IFoneSettingsNodeSkin");
+}
+
+/*
+mx|Alert {
+       
+}
+*/
+
+mx|ProgressBar {
+    bar-skin: ClassReference("com.mattbolt.ifone.IFoneProgressBarSkin");
+    mask-skin: ClassReference("com.mattbolt.ifone.IFoneProgressBarMaskSkin");
+    track-skin: ClassReference("com.mattbolt.ifone.IFoneProgressBarTrackSkin");
+}
+
+.settingsNodeLabel {
+    font-family: VerdanaEmbedded;
+    color: #000000;
+    font-weight: bold;
+    font-size: 16;
+    tracking-right: -0.45;
+}
+
+.defaultCheckBoxLabelStyle {
+    font-family: VerdanaEmbedded;
+    color: #000000;
+    font-weight: bold;
+    font-size: 16;
+    tracking-right: -0.45;
+}
+
+ifone|IFoneWindow {
+    skin-class: ClassReference("com.mattbolt.ifone.IFoneWindowSkin");
+    background-image: Embed(source="/../assets/skins/ifone-window/ifone-window-bg.png");
+}
+
+ifone|IFoneBottomTabBarButton {
+    skin-class: ClassReference("com.mattbolt.ifone.IFoneBottomTabBarButtonSkin");
+}
+
+

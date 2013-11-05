@@ -23,6 +23,9 @@ package com.mattbolt.grits.config {
     //  imports
     //----------------------------------
 
+    import flash.events.EventDispatcher;
+    import flash.events.IEventDispatcher;
+    
     import mx.utils.StringUtil;
 
 
@@ -34,7 +37,7 @@ package com.mattbolt.grits.config {
      *
      * @author Matt Bolt <mbolt35&#64;gmail.com>
      */
-    public class GritsConfigurationFile {
+    public class GritsConfigurationFile extends EventDispatcher implements IEventDispatcher {
 
         //--------------------------------------------------------------------------
         //
@@ -68,7 +71,7 @@ package com.mattbolt.grits.config {
          *
          * @return
          */
-        public function toString():String {
+        public override function toString():String {
             return StringUtil.substitute(
                 "Use Tabbed View: {0}, Window Mode: {1}, Save Logs: {2}",
                 useTabbedView,
@@ -82,6 +85,20 @@ package com.mattbolt.grits.config {
         //
         //--------------------------------------------------------------------------
 
+        /**
+         * This property is set to the last known x-axis position of the grits window.
+         * 
+         * @default 10
+         */
+        public var xPosition:Number;
+        
+        /**
+         * This property is set to the last known y-axis position of the grits window.
+         * 
+         * @default 10
+         */
+        public var yPosition:Number;
+        
         /**
          * This property is set to <code>true</code> if the user wishes to use a tab
          * based log view.
@@ -119,6 +136,11 @@ package com.mattbolt.grits.config {
          * This property contains the file location of the flash log file.
          */
         public var flashLogFileLocation:String;
+        
+        /**
+         * This property contains the log color configuration
+         */
+        public var colorConfig:GritsColorConfiguration = new GritsColorConfiguration();
 
     }
 

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  MATTBOLT.BLOGSPOT.COM
+//  Copyright(C) 2010 Matt Bolt
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at:
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<!---
+* This class represents the main window used to display grits.
+* 
+* @author Matt Bolt [mbolt35&#64;gmail.com]
+-->
+<ifone:IFoneWindow 
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/mx" 
+    xmlns:ifone="com.mattbolt.ifone.*" 
+    systemChrome="none" 
+    showStatusBar="false"
+    title="Grits Socket Output Server"
+    closeClick="close()"
+    width="900" height="400"
+    implements="com.mattbolt.grits.controller.IGritsViewController">
+    
+    <fx:Declarations>
+        
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            import com.mattbolt.grits.Grits;
+            import com.mattbolt.grits.config.GritsColorConfiguration;
+            import com.mattbolt.grits.enum.GritsWindowOptions;
+            import com.mattbolt.grits.net.GritsDeliveryDetails;
+            import com.mattbolt.ifone.IFoneBottomTabBarSkin;
+            
+            import flash.text.engine.TextBaseline;
+            
+            import flashx.textLayout.container.ContainerController;
+            import flashx.textLayout.elements.FlowElement;
+            import flashx.textLayout.elements.ParagraphElement;
+            import flashx.textLayout.elements.SpanElement;
+            import flashx.textLayout.elements.TextFlow;
+            import flashx.textLayout.events.CompositionCompleteEvent;
+            import flashx.textLayout.formats.BackgroundColor;
+            import flashx.textLayout.formats.BaselineOffset;
+            import flashx.textLayout.formats.WhiteSpaceCollapse;
+            
+            import mx.collections.ArrayCollection;
+            import mx.controls.Tree;
+            import mx.events.FlexEvent;
+            
+            import spark.components.RichEditableText;
+            import spark.components.RichText;
+            import spark.components.TextArea;
+            import spark.components.VScrollBar;
+            import spark.utils.TextFlowUtil;
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Variables
+            //
+            //--------------------------------------------------------------------------
+            
+            [Bindable]
+            
+            /**
+             * @private
+             * the grits controller instance.
+             */
+            private var _grits:Grits;
+            
+            /**
+             * @private
+             * backing variable for window mode
+             */
+            private var _windowMode:String;
+            
+            /**
+             * @private
+             * table to maintain the sessions
+             */
+            private var _sessions:Dictionary = new Dictionary();
+            
+            /**
+             * @private
+             * color mapping
+             */
+            private var _colorMap:Dictionary = new Dictionary();
+            
+            /**
+             * @private
+             * keep a mapping of text flow to text areas
+             */
+            private var _textFlowTextAreaMap:Dictionary = new Dictionary(true);
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Methods: IGritsViewController
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * This method prototype defines the initializer which should use the <code>GritsConfiguration</code>
+             * instance to determine ui specifics.
+             *
+             * @param   grits The <code>Grits</code> instance used to initialize the view
+             */
+            public function init(grits:Grits):void {
+                _grits = grits;
+                
+                initColorMap();
+                
+                closeButtonLabel = "Exit";
+                
+                open();
+            }
+            
+            /**
+             * This method prototype defines a delivery path for the log messages to be 
+             * pushed to the view.
+             * 
+             * @param   logSessionId The <code>String</code> identifier (localAddress:localPort)
+             * used to determine the unique id for the log.
+             * 
+             * @param   delivery The <code>GritsDeliveryDetails</code> used to push the delivery
+             * to the UI.
+             */
+            public function pushLog(logSessionId:String, delivery:GritsDeliveryDetails):void {
+                if (!_sessions[logSessionId]) {
+                    initLogInstance(logSessionId);
+                }
+                
+                var textArea:TextArea = textAreaFor(logSessionId);
+                if (!textArea) {
+                    return;
+                }
+                
+                var span:SpanElement = new SpanElement();
+                span.text = delivery.logText;
+                span.paddingBottom = span.paddingTop = span.paddingLeft = span.paddingRight = 0;
+                span.lineHeight = textArea.getStyle("fontSize") * 0.90;
+                span.backgroundColor = _colorMap[delivery.key];
+                
+                var para:ParagraphElement = new ParagraphElement();                
+                para.addChild(span);
+                
+                textArea.textFlow.addChild(para);
+            }
+            
+            /**
+             * @private
+             * returns a text area for the session id
+             */
+            private function textAreaFor(sessionId:String):TextArea {
+                return _sessions[sessionId] as TextArea;
+            }
+            
+            /**
+             * @private
+             * generates a tree node for the delivery.
+             
+            private function nodeFor(delivery:GritsDeliveryDetails):Object {
+                return {
+                    label: "[" + delivery.tag + "][" + delivery.command + "][" + delivery.key + "]: " + delivery.logText;
+                }
+            }*/
+            
+            /**
+             * This method prototype defines a way to "end" the log session. The session will be considered
+             * dead, but the UI will able to keep the log view open, save it to disk, etc...
+             */
+            public function endLog(logSessionId:String):void {
+                
+            }
+            
+            /**
+             * @private
+             * this method generates the navigator content with a text area.
+             */
+            private function initLogInstance(sessionId:String):void {
+                var textArea:TextArea = new TextArea();
+                textArea.percentWidth = textArea.percentHeight = 100;
+                
+                textArea.setStyle("paddingRight", 5);
+                textArea.setStyle("paddingLeft", 5);
+                textArea.setStyle("paddingTop", 5);
+                textArea.setStyle("paddingBottom", 0);
+                
+                textArea.selectable = true;
+                textArea.editable = false;
+                
+                //var textFlow:TextFlow = new TextFlow();
+                //textFlow.addEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, onCompositionComplete);
+                //textArea.textFlow = textFlow;
+                
+                //_textFlowTextAreaMap[textFlow] = textArea;
+                
+                var nav:NavigatorContent = new NavigatorContent();
+                nav.percentWidth = nav.percentHeight = 100;
+                
+                nav.addElement(textArea);
+                nav.label = sessionId;
+                
+                // Map the Session to the Dictionary
+                _sessions[sessionId] = textArea;
+                
+                // Add to the View Stack
+                logViewStack.addElement(nav);
+            }
+            
+            /**
+             * @private
+             * handle the text area update complete
+             */
+            private function onCompositionComplete(event:CompositionCompleteEvent):void {
+                var textArea:TextArea = _textFlowTextAreaMap[TextFlow(event.target)] as TextArea;
+                
+                if (textArea) {
+                    updateScrollerToMax(textArea);
+                }
+            }
+            
+            /**
+             * @private
+             * handle the text area update complete
+             */
+            private function updateScrollerToMax(ta:TextArea):void {
+                var scroller:VScrollBar = ta.scroller.verticalScrollBar;
+                
+                scroller.value = scroller.maximum;
+            }
+            
+            /**
+             * @private
+             * this method initializes the key -> color mapping.
+             */
+            private function initColorMap():void {
+                var color:GritsColorConfiguration = _grits.config.configurationFile.colorConfig;
+                
+                _colorMap["INFO"] = color.infoColor; 
+                _colorMap["DEBUG"] = color.debugColor;
+                _colorMap["WARN"] = color.warnColor;
+                _colorMap["WARNING"] = color.warningColor;
+                _colorMap["ERROR"] = color.errorColor;
+                _colorMap["FATAL"] = color.fatalColor;
+            }
+            
+            
+            //--------------------------------------------------------------------------
+            //
+            //  Properties
+            //
+            //--------------------------------------------------------------------------
+            
+            /**
+             * @private
+             * the window mode based on configuration
+             */
+            private function get windowMode():String {
+                return _windowMode;
+            }
+            
+            /**
+             * @private
+             */
+            private function set windowMode(value:String):void {
+                _windowMode = value;
+                
+                alwaysInFront = _windowMode == GritsWindowOptions.ALWAYS_ON_TOP;
+            }
+            
+        ]]>
+    </fx:Script>
+    
+    <fx:Binding source="_grits.config.configurationFile.windowMode" destination="windowMode"/>
+    
+    <ifone:layout>
+        <s:VerticalLayout paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0" gap="-1"/>
+    </ifone:layout>
+
+    <mx:ViewStack id="outerViewStack" width="100%" height="100%">
+        <s:NavigatorContent label="Logs" icon="@Embed(source='/../assets/icons/book-icon.png')">
+            <s:VGroup width="100%" height="100%" paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0" gap="-1">
+                <s:TabBar width="100%" dataProvider="{logViewStack}"/>
+                <mx:ViewStack id="logViewStack" width="100%" height="100%">
+                    <!--
+                    <s:NavigatorContent label="[New Log]">
+                        <mx:Tree width="100%" height="100%"/>
+                    </s:NavigatorContent>
+                    <s:NavigatorContent label="[New Log 2]">
+                        <mx:Tree width="100%" height="100%"/>
+                    </s:NavigatorContent>
+                    <s:NavigatorContent label="[New Log 3]">
+                        <mx:Tree width="100%" height="100%"/>
+                    </s:NavigatorContent>
+                    -->
+                </mx:ViewStack>
+            </s:VGroup>
+        </s:NavigatorContent>
+        <s:NavigatorContent label="Search" icon="@Embed(source='/../assets/icons/magnify-icon.png')"/>
+        <s:NavigatorContent label="History" icon="@Embed(source='/../assets/icons/logs-icon.png')"/>
+        <s:NavigatorContent label="Settings" icon="@Embed(source='/../assets/icons/settings-icon.png')"/>
+        <s:NavigatorContent label="More" icon="@Embed(source='/../assets/icons/more-icon.png')"/>
+    </mx:ViewStack>
+    
+    <s:TabBar width="100%" dataProvider="{outerViewStack}" skinClass="com.mattbolt.ifone.IFoneBottomTabBarSkin"/>
+</ifone:IFoneWindow>
